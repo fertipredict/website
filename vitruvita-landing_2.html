@@ -1,0 +1,3087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FertiSene — The Quantum Leap in Medical Device Intelligence</title>
+<meta name="description" content="Fault detection and Prescriptive Analytics Built specifically for IVF Equipment. Now accepting pilot site applications.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300..600;1,8..60,300..500&family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Palette extracted from logo */
+    --paper:     #F4F2EC;   /* Original off-white, slightly cool */
+    --paper-2:   #ECE8DE;   /* Original warmer panel surface */
+    --paper-3:   #E2DDD0;   /* Original deeper panel */
+    
+    --landing-bg: var(--cyan-soft); /* New clear blue-white for landing page background */
+    --ink:       #001830;   /* deep midnight navy — dominant logo color */
+    --ink-2:     #003048;   /* secondary navy */
+    --ink-3:     #4A5868;   /* mid neutral */
+    --ink-4:     #8390A0;   /* muted */
+
+    --teal:      #187890;   /* primary accent — mid-deep teal */
+    --teal-2:    #3090A8;   /* bright teal highlight */
+    --teal-3:    #006078;   /* deep teal */
+    --teal-2-rgb: 48, 144, 168; /* RGB values for --teal-2 for rgba() usage */
+    --cyan:      #78C0D8;   /* light cyan accent */
+    --cyan-soft: #D8F0F0;   /* very light cyan, for backgrounds */
+
+    --taupe:     #A89078;   /* warm counterweight (use sparingly) */
+    --taupe-soft:#D8C8B0;
+
+    --rule:      rgba(0, 24, 48, 0.10);
+    --rule-2:    rgba(0, 24, 48, 0.20);
+    --warn:      #B85842;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter Tight', system-ui, sans-serif;
+    background: var(--landing-bg); /* Changed to clear blue-white */
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  /* ============================================================
+     OVERTURE (New Hero Section)
+     ============================================================ */
+  .overture {
+    min-height: 100vh; /* Takes full viewport height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    text-align: center;
+    padding: 120px 0; /* Increased vertical padding */
+    opacity: 0; /* Initially hidden */
+    filter: blur(20px);
+    transition: opacity 1s ease-in-out, filter 1s ease-in-out; /* Fade-in transition */
+    pointer-events: none; /* Not interactive until visible */
+    background: linear-gradient(135deg, var(--cyan-soft), var(--taupe-soft), var(--paper), var(--cyan-soft));
+    background-size: 400% 400%;
+    animation: overtureGradient 8s infinite alternate ease-in-out;
+  }
+  .overture.is-visible {
+    opacity: 1;
+    filter: blur(0);
+    pointer-events: auto;
+  }
+  .overture-headline {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 300;
+    font-size: clamp(48px, 6vw, 80px); /* Large, responsive font size */
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    font-variation-settings: "opsz" 60;
+    max-width: 900px; /* Limits width for readability */
+    margin: 0 auto;
+    animation: floatingHeadline 6s ease-in-out infinite;
+  }
+
+  /* ============================================================
+     FLOW JOURNEY SECTION
+     ============================================================ */
+  .flow-journey-container {
+    position: relative;
+    height: 1000vh; /* Increased runway to allow for a longer text hold */
+    background: var(--landing-bg);
+  }
+  @media (max-width: 768px) {
+    .flow-journey-container { height: 750vh; }
+  }
+
+  .flow-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+
+  #flow-canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: var(--landing-bg);
+  }
+
+  .flow-legend {
+    position: absolute;
+    bottom: 32px;
+    right: 32px;
+    background: rgba(216, 240, 240, 0.85);
+    border: 1px solid var(--rule-2);
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-size: 11px;
+    color: var(--ink-2);
+    line-height: 1.8;
+    backdrop-filter: blur(4px);
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .flow-legend .item { display: flex; align-items: center; gap: 8px; }
+  .flow-legend .swatch { width: 8px; height: 8px; border-radius: 50%; }
+  .flow-legend .bar { width: 18px; height: 2px; }
+
+  #flow-journey .wrap {
+    margin-left: 0;
+    padding-left: 140px; /* Offset to stay clear of the dots' leftward flight bulge */
+  }
+
+  .flow-caption {
+    position: absolute;
+    bottom: 77px; /* Adjusted vertical position */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust for horizontal centering */
+    text-align: center; /* Ensure text is centered within its box */
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 24px; /* Increased font size */
+    font-weight: 500;
+    color: var(--ink-2);
+    z-index: 5;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  /* Integrated stat band styling */
+  .flow-overlay-stat {
+    position: absolute;
+    top: 74%;
+    left: 50%;
+    transform: translate(-50%, 0); /* Horizontal center only as per Fix 3 */
+    width: 100%;
+    max-width: 1100px;
+    padding: 0 32px;
+    z-index: 4;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 76px;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: filter 0.3s ease, opacity 0.3s ease;
+  }
+  .flow-overlay-stat .stat-number {
+    font-size: clamp(72px, 10vw, 130px);
+  }
+  @media (max-width: 980px) {
+    .flow-overlay-stat {
+      grid-template-columns: 1fr;
+      gap: 32px;
+      top: 80%;
+      text-align: center;
+    }
+    .flow-overlay-stat .stat-number {
+      font-size: clamp(72px, 18vw, 110px);
+    }
+  }
+
+  /* Prescriptive Overlay styling */
+  #flow-prescriptive-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 760px;
+    width: 100%;
+    text-align: center;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.8s ease, filter 0.8s ease;
+  }
+
+  @keyframes floatingHeadline {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+  }
+
+  @keyframes floatingFour {
+    0%, 100% { transform: translateY(-50%); }
+    50% { transform: translateY(calc(-50% - 12px)); }
+  }
+
+  @keyframes floatingDot {
+    0% {
+      transform: translateY(0) translateX(0) scale(0.9);
+      opacity: 0.4;
+    }
+    50% {
+      transform: translateY(-25px) translateX(15px) scale(1.1);
+      opacity: 0.8;
+    }
+    100% {
+      transform: translateY(0) translateX(0) scale(0.9);
+      opacity: 0.4;
+    }
+  }
+
+  /* Galaxy floating dots */
+  .galaxy-dots {
+    display: none !important;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    overflow: visible;
+    opacity: 0.7;
+    transition: opacity 0.6s ease-out, transform 0.1s ease-out;
+    will-change: transform, opacity;
+  }
+
+  .floating-dot {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, var(--ink), var(--ink-2));
+    box-shadow: 0 0 15px var(--ink-2), 0 0 30px rgba(0, 24, 48, 0.4);
+    filter: drop-shadow(0 0 10px rgba(0, 24, 48, 0.3));
+    animation: floatingDot 6s ease-in-out infinite;
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+
+  .floating-dot.dark {
+    background: radial-gradient(circle at 35% 35%, var(--ink), var(--ink-2));
+    box-shadow: 0 0 15px var(--ink-2), 0 0 30px rgba(0, 24, 48, 0.4);
+    filter: drop-shadow(0 0 10px rgba(0, 24, 48, 0.3));
+  }
+
+  .floating-dot.cream {
+    background: radial-gradient(circle at 35% 35%, #fff, var(--paper));
+    box-shadow: 0 0 15px #fff, 0 0 30px var(--paper-2);
+    filter: drop-shadow(0 0 10px rgba(244, 236, 236, 0.4));
+  }
+
+  .overture-scroll-hint {
+    position: absolute !important; /* Ensure absolute positioning */
+    bottom: 30px !important;      /* Force bottom position */
+    left: 30px !important;        /* Force left position */
+    text-align: left !important;  /* Ensure text is left-aligned within its own box */
+    z-index: 10;                  /* Ensure it's above other content */
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--ink);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-shadow: 0 0 8px rgba(var(--teal-2-rgb), 0.6); /* Subtle glowing effect */
+  }
+
+  /* Subtle paper grain, fixed */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 200;
+    opacity: 0.30;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.92' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0.09  0 0 0 0 0.18  0 0 0 0.16 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  
+
+  /* ============================================================
+     NAV
+     ============================================================ */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+    background: rgba(216, 240, 240, 0.85); /* Changed to clear blue-white with transparency */
+    border-bottom: 1px solid transparent;
+    transition: opacity 1s ease-in-out, border-color 0.3s ease, background 0.3s ease;
+    opacity: 0;
+  }
+  nav.is-visible { opacity: 1; }
+
+  /* Scroll Progress Bar */
+  .scroll-progress-container {
+    position: fixed;
+    top: 10px; /* Spacing from the top */
+    right: 10px; /* Spacing from the right */
+    width: 12.5%; /* 1/8th of the screen width */
+    height: 3px;
+    background: transparent;
+    z-index: 1001;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  .scroll-progress-container.is-visible { opacity: 1; }
+  .scroll-progress-bar {
+    height: 100%;
+    background: var(--teal);
+    width: 0%;
+    will-change: width;
+  }
+
+  .nav-inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 16px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .brand-mark {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    overflow: hidden;
+    background: transparent;
+  }
+  .brand-mark img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+  }
+  .brand-name {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 19px;
+    letter-spacing: -0.005em;
+    font-variation-settings: "opsz" 32;
+  }
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+    font-size: 14px;
+    color: var(--ink-3);
+  }
+  .nav-links a {
+    color: var(--ink-3);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-cta {
+    padding: 9px 18px;
+    background: var(--ink);
+    color: var(--paper);
+    text-decoration: none;
+    border-radius: 2px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.25s ease;
+  }
+  .nav-cta:hover { background: var(--teal); }
+
+  /* ============================================================
+     CONTAINER
+     ============================================================ */
+  .wrap {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .wrap-narrow {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  section.block#capability .wrap {
+    position: relative;
+    z-index: 2;
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--teal);
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 24px;
+    height: 1px;
+    background: var(--teal);
+  }
+  .eyebrow.center { justify-content: center; }
+  .eyebrow.no-rule::before { display: none; }
+
+  /* ============================================================
+     HERO
+     ============================================================ */
+  .hero {
+    padding: 120px 0 120px; /* Increased vertical padding */
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+    opacity: 0;
+    transform: translateY(30px);
+    filter: blur(10px);
+    transition: opacity 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), filter 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    will-change: opacity, transform, filter;
+  }
+  .hero.is-visible { opacity: 1; transform: translateY(0); filter: blur(0); }
+  .hero .wrap.hero-grid { align-items: stretch; } /* Allow card to fill height */
+
+  /* Reveal Animation Utility */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    filter: blur(20px);
+    transition: opacity 1.5s cubic-bezier(0.25, 1, 0.5, 1), transform 1.5s cubic-bezier(0.25, 1, 0.5, 1), filter 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: opacity, transform, filter;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .hero-left { 
+    max-width: 640px; 
+    text-align: left;
+  }
+  .hero-left .eyebrow { justify-content: flex-start; width: 100%; }
+  .hero h2.hero-headline {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 300;
+    font-size: clamp(38px, 4.8vw, 60px);
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+    margin: 28px 0 96px;
+    font-variation-settings: "opsz" 60;
+  }
+  .hero h2.hero-headline em {
+    font-style: italic;
+    color: var(--teal);
+    font-weight: 400;
+  }
+  .hero-sub {
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--ink-2);
+    margin-bottom: 36px;
+    max-width: 540px;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-bottom: 40px;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 24px;
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 2px;
+    border: 1px solid transparent;
+    transition: all 0.25s ease;
+    cursor: pointer;
+  }
+  .btn-primary {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+  .btn-primary:hover { background: var(--teal); border-color: var(--teal); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink);
+    border-color: var(--rule-2);
+  }
+  .btn-ghost:hover { border-color: var(--ink); }
+  .btn .arrow { transition: transform 0.25s ease; }
+  .btn:hover .arrow { transform: translateX(3px); }
+
+  .hero-trust {
+    display: flex;
+    gap: 32px;
+    padding-top: 28px;
+    border-top: 1px solid var(--rule);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-4);
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  /* Hero data card on the right */
+  .hero-card {
+    background: var(--landing-bg); /* Changed to clear blue-white */
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 0;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.6) inset, 0 8px 24px -16px rgba(0, 24, 48, 0.18);
+    position: relative;
+    overflow: hidden;
+    min-height: 500px;
+  }
+  
+  /* Anomaly Network Styles */
+  #net-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+    background: var(--landing-bg);
+  }
+  #net-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  #net-legend {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    background: rgba(216, 240, 240, 0.85);
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 11px;
+    color: #222;
+    line-height: 1.6;
+    backdrop-filter: blur(4px);
+    z-index: 5;
+  }
+  #net-legend .swatch {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  #net-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--rule);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 5;
+  }
+
+  /* ============================================================
+     STAT BAND
+     ============================================================ */
+  .stat-band {
+    padding: 200px 0; /* Increased spacing around the 87% section */
+    border-bottom: 1px solid var(--rule);
+    background: var(--landing-bg); /* Changed to clear blue-white */
+  }
+  .stat-band-inner {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .stat-number {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 300;
+    font-size: clamp(96px, 14vw, 180px);
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    font-variation-settings: "opsz" 60;
+  }
+  .stat-number sub {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-top: 16px;
+    font-weight: 400;
+  }
+  .stat-prose {
+    font-family: 'Source Serif 4', serif;
+    font-size: 24px;
+    line-height: 1.45;
+    color: var(--ink-2);
+    font-weight: 300;
+    font-variation-settings: "opsz" 32;
+  }
+  .stat-prose strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .stat-prose .footnote {
+    display: block;
+    margin-top: 24px;
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 13px;
+    color: var(--ink-4);
+    line-height: 1.6;
+  }
+
+  /* ============================================================
+     SECTION
+     ============================================================ */
+  section.block {
+    padding: 150px 0; /* Increased vertical padding */
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+  }
+  section.block#capability {
+    position: relative;
+    background: linear-gradient(180deg,
+      #D8F0F0 0%,
+      #B3E5F5 25%,
+      #A3E4F5 50%,
+      #93DDF5 75%,
+      #D8F0F0 100%) !important;
+    transition: filter 0.6s ease-out;
+    overflow: hidden;
+    border-bottom: none;
+  }
+  section.block#capability::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0);
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.6s ease-out;
+  }
+
+  .big-four {
+    position: sticky;
+    top: 50%;
+    left: 8%;
+    transform: translateY(-50%);
+    font-family: 'Source Serif 4', serif;
+    font-weight: 300;
+    font-size: clamp(200px, 30vw, 450px);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    opacity: 0;
+    z-index: 1;
+    pointer-events: none;
+    will-change: opacity;
+    animation: floatingFour 4s ease-in-out infinite;
+    transition: opacity 0.8s ease-out;
+  }
+  .big-four.visible {
+    opacity: 0.12;
+  }
+  @media (max-width: 768px) {
+    .big-four {
+      font-size: clamp(80px, 20vw, 120px);
+      left: 2%;
+    }
+  }
+  .section-head {
+    margin-bottom: 64px;
+    max-width: 720px;
+  }
+  .section-head h2 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 300;
+    font-size: clamp(34px, 4vw, 52px);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    margin: 20px 0 16px;
+    font-variation-settings: "opsz" 60;
+  }
+  .section-head h2 em { font-style: italic; color: var(--teal); font-weight: 400; }
+  .section-head p {
+    font-size: 18px;
+    color: var(--ink-2);
+    line-height: 1.55;
+    max-width: 620px;
+  }
+
+  /* ============================================================
+     CAPABILITY ROWS
+     ============================================================ */
+  .cap-rows { border-top: none; }
+  .cap-row {
+    display: grid;
+    grid-template-columns: 220px 1fr 1fr;
+    gap: 48px;
+    padding: 36px 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: start;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+  .cap-row.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .cap-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    padding-top: 4px;
+  }
+  .cap-label .num {
+    display: block;
+    font-family: 'Source Serif 4', serif;
+    font-style: italic;
+    font-size: 32px;
+    color: var(--ink);
+    margin-bottom: 6px;
+    font-weight: 400;
+  }
+  .cap-col {
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+  .cap-col-head {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-4);
+    margin-bottom: 10px;
+  }
+  .cap-col strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .cap-col.predictive {
+    color: var(--ink-2);
+    border-left: 2px solid var(--rule-2);
+    padding-left: 20px;
+  }
+  .cap-col.prescriptive {
+    color: var(--ink);
+    border-left: 2px solid var(--teal);
+    padding-left: 20px;
+  }
+  .cap-row:nth-child(2) { transition-delay: 0.15s; }
+  .cap-row:nth-child(3) { transition-delay: 0.3s; }
+
+  /* ============================================================
+     FDD CONSOLE
+     ============================================================ */
+  .console-wide {
+    max-width: 1560px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .console-card {
+    border: 1px solid var(--rule-2);
+    border-radius: 6px;
+    background: var(--paper);
+    overflow: hidden;
+    box-shadow: 0 32px 80px -48px rgba(0, 24, 48, 0.4);
+  }
+  .console-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--rule);
+    background: var(--paper-2);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .console-topbar .live {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--teal-3);
+  }
+  .console-topbar .live::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--teal-2);
+    animation: livePulse 2s ease-in-out infinite;
+  }
+  @keyframes livePulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(48, 144, 168, 0.45); }
+    50%      { box-shadow: 0 0 0 6px rgba(48, 144, 168, 0); }
+  }
+
+  .console-body {
+    display: grid;
+    grid-template-columns: 300px 1fr 340px;
+    align-items: stretch;
+  }
+  .console-pane-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-4);
+    padding: 20px 24px 12px;
+  }
+
+  .console-fleet {
+    border-right: 1px solid var(--rule);
+    padding-bottom: 8px;
+  }
+  .fleet-item {
+    padding: 14px 24px 16px;
+    border-top: 1px solid var(--rule);
+    border-left: 2px solid transparent;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+  .fleet-item:hover { background: rgba(48, 144, 168, 0.07); }
+  .fleet-item .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  .fleet-item .dev {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    color: var(--ink);
+  }
+  .fleet-item .kind { font-size: 12.5px; color: var(--ink-4); }
+  .fleet-item svg { width: 74px; height: 20px; color: var(--ink-4); flex-shrink: 0; }
+  .st {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .st::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+  .st-ok    { color: var(--teal-3); }
+  .st-watch { color: var(--taupe); }
+  .st-act   { color: var(--warn); }
+  .fleet-item.sel {
+    background: var(--cyan-soft);
+    border-left-color: var(--teal);
+  }
+  .fleet-item.alert svg { color: var(--warn); }
+
+  .console-main { min-width: 0; padding-bottom: 8px; }
+  .console-note {
+    padding: 0 24px 12px;
+    font-size: 13.5px;
+    color: var(--ink-3);
+    line-height: 1.55;
+    max-width: 760px;
+  }
+  .console-chart-wrap { height: 380px; padding: 0 24px; }
+  #console-chart { width: 100%; height: 100%; display: block; }
+  .console-feed { margin-top: 12px; border-top: 1px solid var(--rule); }
+  .feed-item {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--ink-2);
+    padding: 10px 24px;
+    border-top: 1px dashed var(--rule);
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .feed-list .feed-item:first-child { border-top: none; }
+  .feed-item .ts { color: var(--ink-4); flex-shrink: 0; }
+  .feed-item .tag {
+    flex-shrink: 0;
+    min-width: 84px;
+    color: var(--teal-3);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 10.5px;
+    padding-top: 1px;
+  }
+  .feed-item.warn { color: var(--warn); }
+  .feed-item.warn .tag { color: var(--warn); }
+  .console-live .feed-item { opacity: 1; transform: translateY(0); }
+  .console-live .feed-list .feed-item:nth-child(1) { transition-delay: 1.4s; }
+  .console-live .feed-list .feed-item:nth-child(2) { transition-delay: 2.0s; }
+  .console-live .feed-list .feed-item:nth-child(3) { transition-delay: 2.6s; }
+  .console-live .feed-list .feed-item:nth-child(4) { transition-delay: 3.1s; }
+  /* Faster replay when the user switches assets manually */
+  .console-live.quick .feed-list .feed-item:nth-child(1) { transition-delay: 0.25s; }
+  .console-live.quick .feed-list .feed-item:nth-child(2) { transition-delay: 0.55s; }
+  .console-live.quick .feed-list .feed-item:nth-child(3) { transition-delay: 0.85s; }
+  .console-live.quick .feed-list .feed-item:nth-child(4) { transition-delay: 1.15s; }
+
+  .console-rx {
+    border-left: 1px solid var(--rule);
+    background: var(--landing-bg);
+    display: flex;
+    flex-direction: column;
+  }
+  .rx-inner {
+    padding: 0 24px 24px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .console-live .rx-inner {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 3.5s;
+  }
+  .console-live.quick .rx-inner { transition-delay: 1.4s; }
+  .rx-inner h3 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 400;
+    font-size: 27px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin: 4px 0 18px;
+    font-variation-settings: "opsz" 32;
+  }
+  .rx-row {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 12px;
+    padding: 10px 0;
+    border-top: 1px solid var(--rule);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .rx-row .k {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-4);
+    padding-top: 2px;
+  }
+  .rx-row .v { color: var(--ink); }
+  .rx-actions { margin-top: auto; padding-top: 18px; }
+  .rx-approve {
+    width: 100%;
+    padding: 14px 18px;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    border-radius: 2px;
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.25s ease;
+  }
+  .rx-approve:hover { background: var(--teal); }
+  .rx-approve.done { background: var(--teal-3); cursor: default; }
+  .rx-approve.none {
+    background: transparent;
+    color: var(--ink-4);
+    border: 1px dashed var(--rule-2);
+    cursor: default;
+  }
+  .rx-note {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--ink-4);
+    text-align: center;
+  }
+
+  /* ============================================================
+     PROCESS GRID
+     ============================================================ */
+  .process-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 80px;
+    border-top: none;
+    border-left: none;
+  }
+  .process-step {
+    border-right: none;
+    border-bottom: none;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 32px 28px 36px;
+    background: var(--landing-bg);
+    position: relative;
+    min-height: auto;
+    margin-bottom: 40px;
+    opacity: 0;
+    filter: blur(10px);
+    transition: opacity 0.6s ease, filter 0.6s ease;
+  }
+  .process-step.is-visible {
+    opacity: 1;
+    filter: blur(0);
+  }
+  .process-step .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-4);
+    letter-spacing: 0.12em;
+    margin-bottom: 28px;
+  }
+  .process-step h3 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 1.18;
+    letter-spacing: -0.01em;
+    margin-bottom: 16px;
+    font-variation-settings: "opsz" 32;
+  }
+  .process-step p {
+    font-size: 14px;
+    color: var(--ink-2);
+    line-height: 1.6;
+  }
+  .process-step .meta {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-4);
+    letter-spacing: 0.04em;
+    line-height: 1.7;
+  }
+
+  /* ============================================================
+     WHY GRID
+     ============================================================ */
+  .why-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-top: 1px solid var(--ink);
+  }
+  .why-cell {
+    padding: 32px 0;
+    border-bottom: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+  .why-cell:nth-child(odd) { padding-right: 40px; border-right: 1px solid var(--rule); }
+  .why-cell:nth-child(even) { padding-left: 40px; }
+  .why-cell .icon {
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--rule-2);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--teal);
+    background: var(--landing-bg); /* Changed to clear blue-white */
+  }
+  .why-cell .icon svg { width: 22px; height: 22px; }
+  .why-cell h4 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 400;
+    font-size: 19px;
+    margin-bottom: 8px;
+    letter-spacing: -0.005em;
+    color: var(--ink);
+  }
+  .why-cell p {
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+
+  /* ============================================================
+     PILOT JOURNEY (scroll-driven)
+     ============================================================ */
+  .pilot-journey {
+    position: relative;
+    height: 400vh;
+    background: var(--landing-bg);
+    border-bottom: 1px solid var(--rule);
+  }
+  .pilot-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .pilot-headline {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 860px;
+    padding: 0 32px;
+    text-align: center;
+    opacity: 0;
+    transition: top 0.9s cubic-bezier(0.25, 1, 0.5, 1), transform 0.9s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: opacity, filter, top, transform;
+  }
+  .pilot-headline h2 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 300;
+    font-size: clamp(36px, 4.5vw, 56px);
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+    margin: 20px 0 18px;
+    font-variation-settings: "opsz" 60;
+  }
+  .pilot-headline h2 em { font-style: italic; color: var(--teal); font-weight: 400; }
+  .pilot-headline p {
+    font-size: 17px;
+    color: var(--ink-2);
+    line-height: 1.55;
+    max-width: 640px;
+    margin: 0 auto;
+    transition: opacity 0.6s ease;
+  }
+  .pilot-headline.lift {
+    top: 7%;
+    transform: translate(-50%, 0) scale(0.82);
+  }
+  .pilot-headline.lift p { opacity: 0; }
+
+  .pilot-blocks {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 820px;
+    padding: 0 32px;
+  }
+  .p-block {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 20px;
+    align-items: start;
+    padding: 18px 26px 20px;
+    background: var(--paper);
+    border: 1px solid var(--rule-2);
+    opacity: 0;
+    transform: translateY(-34px) scale(0.97);
+    filter: blur(8px);
+    transition: opacity 0.65s cubic-bezier(0.25, 1, 0.5, 1),
+                transform 0.65s cubic-bezier(0.34, 1.4, 0.5, 1),
+                filter 0.65s ease;
+    will-change: opacity, transform, filter;
+  }
+  .p-block + .p-block { margin-top: -1px; }
+  .p-block.placed {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+  .p-block .p-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--teal);
+    padding-top: 6px;
+  }
+  .p-block strong {
+    display: block;
+    font-family: 'Source Serif 4', serif;
+    font-weight: 400;
+    font-size: 19px;
+    color: var(--ink);
+    margin-bottom: 5px;
+    letter-spacing: -0.005em;
+  }
+  .p-block .desc {
+    display: block;
+    color: var(--ink-2);
+    font-size: 14.5px;
+    line-height: 1.55;
+  }
+  .pilot-foot {
+    margin-top: 28px;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .pilot-foot.placed { opacity: 1; transform: translateY(0); }
+  .pilot-foot .note {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-3);
+    letter-spacing: 0.02em;
+    margin-bottom: 18px;
+  }
+  @media (max-height: 780px) {
+    .pilot-blocks { top: 27%; }
+    .p-block { padding: 12px 20px 14px; }
+    .p-block strong { font-size: 17px; }
+    .p-block .desc { font-size: 13.5px; }
+    .pilot-foot { margin-top: 16px; }
+  }
+  @media (max-width: 768px) {
+    .pilot-journey { height: 320vh; }
+    .pilot-blocks { top: 24%; padding: 0 20px; }
+    .pilot-headline.lift { top: 4%; transform: translate(-50%, 0) scale(0.9); }
+    .p-block { grid-template-columns: 1fr; gap: 4px; padding: 12px 16px 14px; }
+    .p-block strong { font-size: 16.5px; }
+    .p-block .desc { font-size: 13px; }
+  }
+
+  /* ============================================================
+     WAITLIST
+     ============================================================ */
+  .waitlist {
+    padding: 160px 0 150px; /* Increased vertical padding */
+    background: var(--landing-bg); /* Changed to clear blue-white */
+    border-bottom: 1px solid var(--rule);
+  }
+  .waitlist-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .waitlist-left {
+    position: sticky;
+    top: 100px;
+  }
+  .waitlist-left h2 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 300;
+    font-size: clamp(36px, 4.5vw, 56px);
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+    margin: 20px 0 24px;
+    font-variation-settings: "opsz" 60;
+  }
+  .waitlist-left h2 em { font-style: italic; color: var(--teal); font-weight: 400; }
+  .waitlist-left p {
+    font-size: 17px;
+    color: var(--ink-2);
+    line-height: 1.55;
+    max-width: 420px;
+    margin-bottom: 28px;
+  }
+  .waitlist-left .timeline {
+    border-top: 1px solid var(--rule);
+    padding-top: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-3);
+    letter-spacing: 0.02em;
+  }
+  .waitlist-left .timeline-row {
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    gap: 16px;
+    padding: 8px 0;
+  }
+  .waitlist-left .timeline-row .when { color: var(--ink-4); }
+
+  form.signup {
+    background: var(--landing-bg); /* Changed to clear blue-white */
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 36px;
+  }
+  .form-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 20px;
+    margin-bottom: 28px;
+    border-bottom: 1px solid var(--rule);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .form-head strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .field { margin-bottom: 22px; }
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 8px;
+    letter-spacing: 0.005em;
+  }
+  .field label .req {
+    color: var(--warn);
+    margin-left: 4px;
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    padding: 12px 14px;
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 15px;
+    color: var(--ink);
+    background: var(--landing-bg); /* Changed to clear blue-white */
+    border: 1px solid var(--rule-2);
+    border-radius: 2px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px var(--cyan-soft);
+  }
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .field textarea {
+    min-height: 80px;
+    resize: vertical;
+    font-family: 'Inter Tight', sans-serif;
+  }
+  .field-help {
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--ink-4);
+    line-height: 1.5;
+  }
+
+  .check-row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 16px 0;
+    border-top: 1px solid var(--rule);
+    margin-top: 8px;
+  }
+  .check-row input[type="checkbox"] {
+    margin-top: 3px;
+    width: 14px;
+    height: 14px;
+    accent-color: var(--teal);
+  }
+  .check-row label {
+    font-size: 13px;
+    color: var(--ink-3);
+    line-height: 1.5;
+    margin: 0;
+    font-weight: 400;
+  }
+
+  .submit-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-top: 24px;
+  }
+  button.submit {
+    padding: 14px 28px;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    border-radius: 2px;
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.25s ease;
+  }
+  button.submit:hover { background: var(--teal); }
+  .submit-note {
+    font-size: 12px;
+    color: var(--ink-4);
+  }
+
+  .form-success {
+    display: none;
+    padding: 28px;
+    text-align: center;
+    background: var(--cyan-soft);
+    border: 1px solid var(--teal);
+    border-radius: 4px;
+    color: var(--teal);
+  }
+  .form-success.shown { display: block; }
+  .form-success h3 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 400;
+    font-size: 22px;
+    margin-bottom: 8px;
+    color: var(--ink);
+  }
+  .form-success p {
+    font-size: 14px;
+    color: var(--ink-2);
+  }
+  .success-branding {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 36px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--rule-2);
+  }
+  .success-branding .brand-mark { width: 48px; height: 48px; }
+  .success-branding .brand-name { font-size: 24px; }
+  
+  .success-nav {
+    display: flex;
+    gap: 24px;
+    font-size: 13px;
+    font-weight: 500;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .success-nav a {
+    color: var(--ink-3);
+    text-decoration: none;
+    transition: color 0.2s;
+    white-space: nowrap;
+  }
+  .success-nav a:hover { color: var(--ink); }
+
+  /* ============================================================
+     FAQ
+     ============================================================ */
+  .faq {
+    padding: 150px 0; /* Increased vertical padding */
+    border-bottom: 1px solid var(--rule);
+  }
+  .faq-list {
+    border-top: 1px solid var(--ink);
+  }
+  details.faq-item {
+    border-bottom: 1px solid var(--rule);
+    padding: 0;
+  }
+  details.faq-item summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 28px 0;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: center;
+    font-family: 'Source Serif 4', serif;
+    font-weight: 400;
+    font-size: 21px;
+    line-height: 1.3;
+    color: var(--ink);
+    transition: color 0.2s ease;
+    font-variation-settings: "opsz" 32;
+  }
+  details.faq-item summary::-webkit-details-marker { display: none; }
+  details.faq-item summary:hover { color: var(--teal); }
+  .faq-toggle {
+    width: 32px; height: 32px;
+    border: 1px solid var(--rule-2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-3);
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+  }
+  details[open] .faq-toggle {
+    transform: rotate(45deg);
+    border-color: var(--teal);
+    color: var(--teal);
+  }
+  details.faq-item[open] summary { color: var(--ink); }
+  .faq-body {
+    padding: 0 64px 32px 0;
+    color: var(--ink-2);
+    font-size: 16px;
+    line-height: 1.65;
+    max-width: 720px;
+  }
+
+  /* ============================================================
+     FINAL CTA
+     ============================================================ */
+  .final {
+    padding: 160px 0; /* Increased vertical padding */
+    text-align: center;
+    background: var(--landing-bg); /* Changed to clear blue-white */
+    border-bottom: 1px solid var(--rule);
+  }
+  .final h2 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 300;
+    font-size: clamp(36px, 5vw, 60px);
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+    max-width: 760px;
+    margin: 24px auto 16px;
+    font-variation-settings: "opsz" 60;
+  }
+  .final h2 em { font-style: italic; color: var(--teal); font-weight: 400; }
+  .final p {
+    font-size: 17px;
+    color: var(--ink-2);
+    max-width: 540px;
+    margin: 0 auto 36px;
+  }
+
+  /* ============================================================
+     FOOTER
+     ============================================================ */
+  footer {
+    padding: 36px 0 40px;
+    background: var(--landing-bg); /* Changed to clear blue-white */
+  }
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-4);
+  }
+  .footer-inner a { color: var(--ink-4); text-decoration: none; }
+  .footer-inner a:hover { color: var(--ink); }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media (max-width: 980px) {
+    .hero-grid,
+    .stat-band-inner,
+    .pilot-grid,
+    .waitlist-grid { grid-template-columns: 1fr; gap: 48px; }
+    .stat-number { font-size: 110px; }
+    .process-grid { grid-template-columns: 1fr; gap: 48px; }
+    .why-grid { grid-template-columns: 1fr; }
+    .why-cell:nth-child(odd) { border-right: none; padding-right: 0; }
+    .why-cell:nth-child(even) { padding-left: 0; }
+    .cap-row { grid-template-columns: 1fr; gap: 16px; }
+    .cap-label { padding-top: 0; }
+    .console-body { grid-template-columns: 1fr; }
+    .console-fleet { border-right: none; border-bottom: 1px solid var(--rule); }
+    .console-rx { border-left: none; border-top: 1px solid var(--rule); }
+    .console-chart-wrap { height: 300px; }
+    .field-row { grid-template-columns: 1fr; }
+    .nav-links a:not(.nav-cta):not(.nav-login) { display: none; }
+    .waitlist-left { position: static; }
+  }
+  @media (max-width: 560px) {
+    .wrap, .wrap-narrow, .nav-inner, .console-wide { padding-left: 20px; padding-right: 20px; }
+    .hero { padding: 80px 0 80px; } /* Adjusted for smaller screens */
+    section.block, .pilot, .waitlist, .faq, .final, .stat-band { padding: 90px 0; } /* Adjusted for smaller screens */
+    .process-grid { grid-template-columns: 1fr; }
+    form.signup { padding: 24px; }
+    .console-chart-wrap { height: 240px; }
+    .faq-body { padding-right: 0; }
+    .overture { padding-top: 120px; padding-bottom: 120px; } /* Adjusted for smaller screens */
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+    body.scrolled-past-overture .overture { transition: opacity 0.3s ease; }
+  }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress-container"><div class="scroll-progress-bar" id="progressBar"></div></div>
+
+<!-- =====================================================================
+     ORIGINAL SPLASH (kept exactly as provided)
+     The wrapper #fertiSplash is the only addition: it lets us fade the
+     overlay away on Begin click instead of navigating to a separate page.
+     ===================================================================== -->
+<div id="fertiSplash" aria-label="Welcome">
+<style id="splash-style">
+  /* Splash-only scope. All selectors are prefixed with #fertiSplash so
+     they cannot affect the landing page underneath. The original rules
+     are preserved 1:1 in spirit; only the selector prefix is added. */
+
+  /* Lock background scroll while splash is up */
+  body.fs-lock { overflow: hidden; }
+
+  /* Fullscreen background — original gradient and animation */
+  #fertiSplash {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: linear-gradient(135deg, #e6d8cb, #013657, #1C4A6E, #3278B8, #4FAEE5, #e6d8cb, #1C4A6E, #012A43, #e6d8cb);
+    background-size: 400% 400%;
+    animation: fsGradient 6s infinite alternate ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Arial', sans-serif;
+    transition: opacity 0.8s ease-in-out, background 0.5s ease;
+  }
+  #fertiSplash.fs-white {
+    background: #ffffff !important;
+  }
+  #fertiSplash.fs-white .content,
+  #fertiSplash.fs-white .copyright {
+    opacity: 0 !important;
+    transition: opacity 0.4s ease;
+  }
+  #fertiSplash.fs-out { opacity: 0; pointer-events: none; }
+
+  @keyframes fsGradient {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Preloader */
+  #fertiSplash .preloader {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: #012A43;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 1;
+  }
+
+  /* Logo Styling */
+  #fertiSplash .logo {
+    width: 300px;
+    height: auto;
+    opacity: 0;
+  }
+
+  /* Center content */
+  #fertiSplash .content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100vw;
+    height: 90vh;
+    opacity: 0;
+  }
+
+  /* Neural Circuit Background Animation */
+  #fertiSplash .circuit {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 10%, rgba(1, 42, 67, 0.1) 50%, rgba(1, 42, 67, 0) 100%);
+    box-shadow: 0px 0px 20px rgba(79, 174, 229, 0.6);
+    animation: fsPulse 3s infinite alternate ease-in-out;
+  }
+  @keyframes fsPulse {
+    0%   { transform: scale(1);   opacity: 0.8; }
+    100% { transform: scale(1.5); opacity: 0.2; }
+  }
+
+  /* Circular Outline Button */
+    #fertiSplash #logo-trigger {
+    width: 300px;
+    height: 300px;
+    object-fit: contain;
+    display: block;
+    cursor: pointer;
+    z-index: 10;
+    position: relative;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
+    animation: fsFadeInUp 2s forwards;
+  }
+  #fertiSplash #logo-trigger:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 20px rgba(79, 174, 229, 0.8));
+  }
+
+  @keyframes fsFadeInUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fsBounce {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.06); }
+  }
+
+  /* Mouse Follow Effect */
+#fertiSplash .inner-circle {
+  display: none;
+}
+#fertiSplash .outer-circle {
+  display: none;
+}
+
+  /* Footer */
+  #fertiSplash .copyright {
+    width: 100%;
+    text-align: center;
+    padding: 15px 0;
+    position: absolute;
+    bottom: 0;
+    font-size: 15px;
+    color: #FFFFFF;
+    font-family: 'JetBrains Mono', monospace; /* Changed to a more futuristic font */
+  }
+
+  /* Typewriter animation for the copyright text */
+  #fertiSplash #copyright-text-animated {
+    display: inline-block; /* Important for width animation */
+    overflow: hidden; /* Ensures text is hidden until typed */
+    white-space: nowrap; /* Keeps text on a single line */
+    border-right: .15em solid rgba(255, 255, 255, 0.7); /* Blinking caret */
+    width: 0; /* Start with zero width */
+    animation:
+      typing 3s steps(42, end) forwards, /* Type out exactly 42 characters */
+      blink-caret .75s step-end infinite; /* Blinking cursor */
+    animation-delay: 4.5s; /* Delay to start after main splash animation */
+  }
+
+  @keyframes typing {
+    from { width: 0 }
+    to { width: 42ch } /* Match character count so the cursor stops at the period */
+  }
+
+  @keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: rgba(255, 255, 255, 0.7) }
+  }
+</style>
+
+<!-- Preloader with Logo Fade-In Effect -->
+<div class="preloader">
+  <img src="logo_transparent.png" alt="FertiSene Logo" class="logo">
+</div>
+
+<div class="content">
+  <div class="circuit"></div>
+  <div class="outer-circle"></div>
+  <div class="inner-circle"></div>
+  <img src="logo_transparent.png" alt="FertiSene Logo" id="logo-trigger">
+</div>
+
+<!-- Footer -->
+<div class="copyright"><span id="copyright-text-animated">&copy; 2026 FertiSene S.L. All rights reserved.</span></div>
+
+</div>
+
+<!-- GSAP for the original splash timeline -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script>
+(function () {
+  // Lock scroll while splash is up
+  document.body.classList.add("fs-lock");
+
+  // Original GSAP timeline — unchanged
+  gsap.timeline()
+    .to("#fertiSplash .logo",      { opacity: 1, duration: 1.5 })
+    .to("#fertiSplash .preloader", { opacity: 0, duration: 0.5, delay: 1 })
+    .to("#fertiSplash .preloader", { display: "none" })
+    .to("#fertiSplash .content",   { opacity: 1, duration: 0.5 });
+
+  // Original mouse follow effect — scoped to splash
+  const innerCircle = document.querySelector("#fertiSplash .inner-circle");
+  const outerCircle = document.querySelector("#fertiSplash .outer-circle");
+  const splash = document.getElementById("fertiSplash");
+
+  function onMove(e) {
+    if (!splash || splash.classList.contains("fs-out")) return;
+    requestAnimationFrame(function () {
+      innerCircle.style.left = e.clientX + "px";
+      innerCircle.style.top  = e.clientY + "px";
+      outerCircle.style.left = e.clientX + "px";
+      outerCircle.style.top  = e.clientY + "px";
+    });
+  }
+  window.addEventListener("mousemove", onMove);
+
+  // Begin button — dismiss the splash and reveal the landing page
+  function dismiss() {
+    // Phase 1: Fade out splash content and turn background white
+    splash.classList.add("fs-white");
+
+    setTimeout(function () {
+      // Phase 2: Fade out the white overlay and reveal the Overture headline
+      splash.classList.add("fs-out");
+      document.body.classList.remove("fs-lock");
+      window.removeEventListener("mousemove", onMove);
+
+      const overture = document.getElementById("overture-section");
+      if (overture) overture.classList.add("is-visible");
+      if (splash && splash.parentNode) splash.parentNode.removeChild(splash);
+
+      const progressContainer = document.querySelector('.scroll-progress-container');
+      if (progressContainer) progressContainer.classList.add('is-visible');
+    }, 500);
+
+    setTimeout(function () {
+      // Remove the inline GSAP-injected styles + element so it cannot
+      // trap focus or accept clicks once hidden.
+      if (splash && splash.parentNode) splash.parentNode.removeChild(splash);
+      const ss = document.getElementById("splash-style");
+      if (ss && ss.parentNode) ss.parentNode.removeChild(ss);
+    }, 1500);
+  }
+
+  const logoTrigger = document.getElementById("logo-trigger");
+  if (logoTrigger) {
+    logoTrigger.addEventListener("click", dismiss);
+  }
+
+  // Allow Enter / Space / Escape from the keyboard
+  document.addEventListener("keydown", function onKey(e) {
+    if (!splash || splash.classList.contains("fs-out")) return;
+    if (e.key === "Enter" || e.key === " " || e.key === "Escape") {
+      e.preventDefault();
+      dismiss();
+      document.removeEventListener("keydown", onKey);
+    }
+  });
+})();
+</script>
+
+
+<main>
+
+<!-- ============================================================
+     NAVIGATION
+     ============================================================ -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="brand">
+      <div class="brand-mark">
+        <img src="logo_transparent.png" alt="FertiSene Logo">
+      </div>
+      <span class="brand-name">FertiSene</span>
+    </a>
+    <div class="nav-links">
+      <a href="#fdd-console">The console</a>
+      <a href="#pilot">Pilot program</a>
+      <!-- Note: This link points to a local file path. Consider changing to a relative path or a proper URL for deployment. -->
+      <a href="C:\Users\mgg24\OneDrive\Escritorio\fertisene\index.html" class="nav-login">Partner login</a>
+      <a href="#faq">FAQ</a>
+      <a href="#waitlist" class="nav-cta">Request Access</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================================================
+     OVERTURE (New Hero Section)
+     ============================================================ -->
+<section class="overture" id="overture-section">
+  <div class="wrap-narrow">
+    <h1 class="overture-headline">The Quantum Leap in IVF Asset Management</h1>
+  </div>
+  <div class="overture-scroll-hint"><strong>Scroll Down to Explore</strong></div>
+</section>
+
+<!-- ============================================================
+     FLOW JOURNEY: FROM SIGNAL TO BEHAVIOR
+     ============================================================ -->
+<section class="flow-journey-container" id="flow-journey">
+  <div class="flow-sticky">
+    <canvas id="flow-canvas"></canvas>
+
+    <div class="flow-legend" id="flowLegend" style="opacity:0;">
+      <div class="item"><span class="bar" style="background:#3090A8"></span>Target setpoint · 37.0 °C</div>
+      <div class="item"><span class="bar" style="background:#4A5868"></span>Learned healthy behaviour</div>
+      <div class="item"><span class="bar" style="background:#B85842"></span>Developing fault · flagged</div>
+    </div>
+    
+    <div class="wrap" id="flow-text-content" style="position: relative; z-index: 2;">
+      <div class="section-head">
+        <span class="eyebrow">From signal to behavior</span>
+        <h2>Every dot becomes a story. <em>Three lines tell you what to do.</em></h2>
+        <p>Target setpoint, learned healthy behaviour, and a developing fault — resolved live from a single incubator's temperature stream across one working day.</p>
+      </div>
+      <div class="hero-actions" style="pointer-events: auto;">
+        <a href="#waitlist" class="btn btn-primary">
+          Request pilot access
+          <span class="arrow">→</span>
+        </a>
+        <a href="#fdd-console" class="btn btn-ghost" >
+          See the console
+        </a>
+      </div>
+    </div>
+
+    <!-- Integrated stat reveal -->
+    <div id="flow-stat-band" class="flow-overlay-stat">
+      <div class="stat-number">
+        87%
+        <sub>of equipment incidents reviewed</sub>
+      </div>
+      <div class="stat-prose">
+        In our retrospective analysis of incubator service logs, <strong>roughly nine in ten failures showed a measurable signal in the sensor data days before the incident</strong> — drift in CO₂ recovery time, lengthening temperature recovery, gas flow anomalies.
+        <span class="footnote">Based on engineer service notes and sensor logs from partner clinics, 2023–2025.</span>
+      </div>
+    </div>
+
+    <!-- Final Prescriptive Overlay (Fix 5) -->
+    <div id="flow-prescriptive-overlay">
+      <div class="section-head" style="margin: 0 auto;">
+        <span class="eyebrow center">Predictive becomes Prescriptive</span>
+        <h2>It's not enough to predict a fault. <em>The system has to tell you what to do about it.</em></h2>
+        <p style="margin: 24px auto 0;">Existing monitoring tells you a threshold has been crossed. Predictive tools tell you a failure is coming. FertiSene goes one step further — it produces the action, the part, and the work order.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FDD CONSOLE
+     ============================================================ -->
+<section class="block reveal" id="fdd-console">
+  <div class="console-wide">
+    <div class="console-card">
+      <div class="console-topbar">
+        <span>FertiSene · Fault Detection &amp; Diagnosis</span>
+        <span class="live">Live</span>
+        <span id="console-clock">--:--:-- · SITE-01</span>
+      </div>
+      <div class="console-body">
+
+        <aside class="console-fleet">
+          <div class="console-pane-label">Asset fleet · Site 01 · select to inspect</div>
+          <div class="fleet-item" data-asset="INC-01">
+            <div class="row"><span class="dev">INC-01</span><span class="st st-ok">Nominal</span></div>
+            <div class="row"><span class="kind">CO₂ incubator</span><svg viewBox="0 0 60 18" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="0,10 7,9 14,10 21,9 28,10 35,8 42,10 49,9 56,10 60,9"/></svg></div>
+          </div>
+          <div class="fleet-item" data-asset="INC-02">
+            <div class="row"><span class="dev">INC-02</span><span class="st st-ok">Nominal</span></div>
+            <div class="row"><span class="kind">CO₂ incubator</span><svg viewBox="0 0 60 18" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="0,9 7,10 14,9 21,10 28,9 35,10 42,9 49,10 56,9 60,10"/></svg></div>
+          </div>
+          <div class="fleet-item sel alert" data-asset="INC-03">
+            <div class="row"><span class="dev">INC-03</span><span class="st st-act">Fault · F-03</span></div>
+            <div class="row"><span class="kind">CO₂ incubator</span><svg viewBox="0 0 60 18" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="0,13 7,12 14,13 21,11 28,10 35,9 42,7 49,5 56,4 60,3"/></svg></div>
+          </div>
+          <div class="fleet-item" data-asset="CRYO-01">
+            <div class="row"><span class="dev">CRYO-01</span><span class="st st-watch">Watch</span></div>
+            <div class="row"><span class="kind">Cryostorage tank</span><svg viewBox="0 0 60 18" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="0,12 7,11 14,12 21,10 28,11 35,10 42,9 49,10 56,8 60,9"/></svg></div>
+          </div>
+          <div class="fleet-item" data-asset="ULT-01">
+            <div class="row"><span class="dev">ULT-01</span><span class="st st-ok">Nominal</span></div>
+            <div class="row"><span class="kind">Ultra-low freezer · −80 °C</span><svg viewBox="0 0 60 18" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="0,10 7,10 14,9 21,10 28,10 35,9 42,10 49,9 56,10 60,10"/></svg></div>
+          </div>
+          <div class="fleet-item" data-asset="FRG-01">
+            <div class="row"><span class="dev">FRG-01</span><span class="st st-ok">Nominal</span></div>
+            <div class="row"><span class="kind">Medical refrigerator</span><svg viewBox="0 0 60 18" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="0,11 7,10 14,12 21,9 28,11 35,8 42,10 49,7 56,9 60,8"/></svg></div>
+          </div>
+        </aside>
+
+        <div class="console-main">
+          <div class="console-pane-label" id="consoleChartTitle">Fault signature · INC-03 · CO₂ recovery after door events (min)</div>
+          <div class="console-note">A monitoring system compares readings to a fixed limit. FDD learns each asset's healthy behaviour, isolates the failing component, and prescribes the intervention — days before any limit is crossed.</div>
+          <div class="console-chart-wrap"><canvas id="console-chart"></canvas></div>
+          <div class="console-feed">
+            <div class="console-pane-label">Event trace · from detection to prescription</div>
+            <div class="feed-list">
+              <div class="feed-item warn"><span class="ts">06:42:11</span><span class="tag">Detect</span><span>INC-03 · recovery behaviour departed its learned baseline · +22% deviation, well below any alarm limit</span></div>
+              <div class="feed-item"><span class="ts">06:42:12</span><span class="tag">Diagnose</span><span>Fault isolated to CO₂ sensor drift (F-03) — door seal, gas supply and control loop ruled out</span></div>
+              <div class="feed-item"><span class="ts">06:42:13</span><span class="tag">Predict</span><span>Sensor failure projected in ~9 days · first monitoring alarm not expected for 4 days</span></div>
+              <div class="feed-item"><span class="ts">06:42:14</span><span class="tag">Prescribe</span><span>Work order WO-2381 drafted · part, reroute and service window attached · awaiting embryologist sign-off</span></div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="console-rx">
+          <div class="console-pane-label">Prescribed action · WO-2381</div>
+          <div class="rx-inner">
+            <h3>Replace CO₂ sensor on incubator INC-03</h3>
+            <div class="rx-row"><span class="k">Part</span><span class="v">CO₂ IR sensor · in stock on site</span></div>
+            <div class="rx-row"><span class="k">Reroute</span><span class="v">Active cohort → incubator INC-02 for 72 h</span></div>
+            <div class="rx-row"><span class="k">Window</span><span class="v">Thu 07:00 · existing service slot, no extra visit</span></div>
+            <div class="rx-row"><span class="k">Impact</span><span class="v">No active cycles affected · zero unplanned downtime</span></div>
+            <div class="rx-row"><span class="k">Lead time</span><span class="v">9 days before projected failure</span></div>
+            <div class="rx-row"><span class="k">Evidence</span><span class="v">7 precedent service cases · top match 0.91</span></div>
+            <div class="rx-actions">
+              <button type="button" class="rx-approve" id="rxApprove">Approve work order →</button>
+              <div class="rx-note">Embryologist sign-off · full audit trail recorded</div>
+            </div>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PILOT
+     ============================================================ -->
+<section class="pilot-journey" id="pilot">
+  <div class="pilot-sticky">
+
+    <div class="pilot-headline" id="pilotHeadline">
+      <span class="eyebrow center no-rule">Pilot program · 2026</span>
+      <h2>We're selecting a small number of <em>founding pilot sites</em>.</h2>
+      <p>Three to five clinics across the EU. Six- to twelve-week structured studies, offered without licence fee in exchange for collaboration on methodology and outcomes review.</p>
+    </div>
+
+    <div class="pilot-blocks">
+      <div class="p-block">
+        <div class="p-num">01</div>
+        <div>
+          <strong>No licence fee for the pilot period</strong>
+          <span class="desc">Twelve-week study window. Software, hosting, and embryologist-facing dashboard included. No cost to the clinic.</span>
+        </div>
+      </div>
+      <div class="p-block">
+        <div class="p-num">02</div>
+        <div>
+          <strong>Methodology defined jointly</strong>
+          <span class="desc">Baseline period, fault-family scope, and success criteria agreed before instrumentation begins. The clinic's lab director is co-author of the protocol.</span>
+        </div>
+      </div>
+      <div class="p-block">
+        <div class="p-num">03</div>
+        <div>
+          <strong>Structured outcomes report</strong>
+          <span class="desc">At pilot end, you receive a written report of detection precision and recall per fault family, lead time on prevented incidents, and downtime saved per device.</span>
+        </div>
+      </div>
+      <div class="p-block">
+        <div class="p-num">04</div>
+        <div>
+          <strong>Optional joint publication</strong>
+          <span class="desc">De-identified findings may be co-authored for peer-reviewed submission. The clinic retains right of refusal at every stage.</span>
+        </div>
+      </div>
+      <div class="p-block">
+        <div class="p-num">05</div>
+        <div>
+          <strong>Data ownership preserved</strong>
+          <span class="desc">Sensor data, CRM content, and all derived insights remain the clinic's property. Data-use agreement signed before any data leaves the lab.</span>
+        </div>
+      </div>
+
+      <div class="pilot-foot" id="pilotFoot">
+        <div class="note">Pilot intake is rolling and capped — earlier applicants receive priority for cohort one.</div>
+        <a href="#waitlist" class="btn btn-primary">Request pilot access <span class="arrow">→</span></a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     WAITLIST
+     ============================================================ -->
+<section class="waitlist reveal" id="waitlist">
+  <div class="wrap waitlist-grid">
+
+    <div class="waitlist-left">
+      <span class="eyebrow">Pilot site application</span>
+      <h2>Request access for <em>your laboratory</em>.</h2>
+      <p>We review every application personally. If your lab is a fit for the founding cohort, we'll be in touch within five working days to schedule a thirty-minute call.</p>
+
+      <div class="timeline">
+        <div class="timeline-row"><span class="when">+ 5 days</span><span>Personal reply from our team</span></div>
+        <div class="timeline-row"><span class="when">+ 2 weeks</span><span>Thirty-minute scoping call</span></div>
+        <div class="timeline-row"><span class="when">+ 4 weeks</span><span>Joint protocol finalised</span></div>
+        <div class="timeline-row"><span class="when">+ 6 weeks</span><span>Instrumentation begins</span></div>
+      </div>
+    </div>
+
+    <form class="signup" id="signupForm" novalidate>
+      <div class="form-head">
+        <span>Application</span>
+        <span><strong>Cohort 1</strong> · 2026</span>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="firstName">First name <span class="req">*</span></label>
+          <input type="text" id="firstName" name="firstName" required autocomplete="given-name">
+        </div>
+        <div class="field">
+          <label for="lastName">Last name <span class="req">*</span></label>
+          <input type="text" id="lastName" name="lastName" required autocomplete="family-name">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="role">Role <span class="req">*</span></label>
+        <select id="role" name="role" required>
+          <option value="">Select your role</option>
+          <option>Laboratory Director</option>
+          <option>Senior Embryologist</option>
+          <option>Quality Manager</option>
+          <option>Medical Director</option>
+          <option>Clinic Owner / CEO</option>
+          <option>Biomedical Engineer</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="email">Work email <span class="req">*</span></label>
+        <input type="email" id="email" name="email" required autocomplete="email">
+        <div class="field-help">We respond from a real person at this address.</div>
+      </div>
+
+      <div class="field">
+        <label for="clinic">Clinic or laboratory name <span class="req">*</span></label>
+        <input type="text" id="clinic" name="clinic" required>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="country">Country <span class="req">*</span></label>
+          <input type="text" id="country" name="country" required autocomplete="country-name">
+        </div>
+        <div class="field">
+          <label for="cycles">Cycles per year</label>
+          <select id="cycles" name="cycles">
+            <option value="">Approximate</option>
+            <option>Under 250</option>
+            <option>250 – 750</option>
+            <option>750 – 2,000</option>
+            <option>2,000 – 5,000</option>
+            <option>Over 5,000</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="equipment">Primary incubator platforms in use</label>
+        <input type="text" id="equipment" name="equipment" placeholder="e.g. EmbryoScope+, G210, MIRI TL, Cook MINC, Geri">
+        <div class="field-help">FertiSene is OEM-agnostic. We list this only to scope the pilot.</div>
+      </div>
+
+      <div class="field">
+        <label for="notes">Anything we should know</label>
+        <textarea id="notes" name="notes" placeholder="Particular pain points, recent equipment incidents, regulatory framework, internal stakeholders…"></textarea>
+      </div>
+
+      <div class="check-row">
+        <input type="checkbox" id="consent" required>
+        <label for="consent">I confirm I am authorised to engage on behalf of my organisation regarding evaluation of laboratory equipment monitoring tools. We may process this submission under our privacy policy to assess pilot fit.</label>
+      </div>
+
+      <div class="submit-row">
+        <button type="submit" class="submit">Submit application</button>
+        <span class="submit-note">No marketing emails. Reviewed personally.</span>
+      </div>
+
+      <div class="form-success" id="formSuccess" role="status" aria-live="polite">
+        <div class="success-branding">
+          <div class="brand">
+            <div class="brand-mark">
+              <img src="logo_transparent.png" alt="FertiSene Logo">
+            </div>
+            <span class="brand-name">FertiSene</span>
+          </div>
+          <div class="success-nav">
+            <a href="#fdd-console">The console</a>
+            <a href="#pilot">Pilot program</a>
+            <a href="#faq">FAQ</a>
+            <a href="C:\Users\mgg24\OneDrive\Escritorio\fertisene\index.html">Partner login</a>
+          </div>
+        </div>
+        <h3>Application received.</h3>
+        <p>We'll be in touch within five working days. If your context is time-sensitive, reply to the confirmation email and we'll prioritise.</p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- ============================================================
+     FAQ
+     ============================================================ -->
+<section class="faq reveal" id="faq">
+  <div class="wrap-narrow">
+    <div class="section-head">
+      <span class="eyebrow">Frequently asked</span>
+      <h2>Questions we hear from <em>laboratory directors</em>.</h2>
+    </div>
+
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>What does the pilot actually require from our laboratory?<span class="faq-toggle">+</span></summary>
+        <div class="faq-body">A data export — typically read-only — from your existing incubator platforms and, if available, your CRM service records. No equipment changes. No installation in the lab. Most pilots are scoped in a single thirty-minute call and require under five hours of total time from the lab director across the twelve-week period. We handle methodology, instrumentation, and reporting.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Is this a replacement for our existing alarm or monitoring system?<span class="faq-toggle">+</span></summary>
+        <div class="faq-body">No. FertiSene runs alongside whatever environmental monitoring you already have — Xiltrix, IVFqc, OEM-supplied platforms. Threshold alarms remain the source of truth for acute events. Our role is the layer above: detecting drift days before a threshold is crossed, and translating it into prescribed action.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Who owns the data, and where is it processed?<span class="faq-toggle">+</span></summary>
+        <div class="faq-body">The clinic owns its data. Sensor telemetry, CRM content, and any derived insights remain your property. Processing occurs in EU-hosted infrastructure under GDPR. A bilateral data-use agreement is signed before any data leaves the lab. We do not train models on clinic data without explicit, written consent — and even then, only on de-identified, aggregated features.</div>
+      </details>
+      <details class="faq-item">
+        <summary>How do you measure success during the pilot?<span class="faq-toggle">+</span></summary>
+        <div class="faq-body">Success criteria are defined jointly with your laboratory director before instrumentation begins. Typical metrics include: precision and recall on detection of fault families relevant to your equipment mix, lead time between detection and the equivalent threshold-alarm or service event, and downtime avoided per device per quarter. The final report contains all three, fully transparent, including any false-positive analysis.</div>
+      </details>
+      <details class="faq-item">
+        <summary>What happens after the pilot?<span class="faq-toggle">+</span></summary>
+        <div class="faq-body">Three options, your choice. Continue with a commercial agreement on terms agreed at the start of the pilot. Pause and revisit. Or end with no obligation and retain the outcomes report. Founding pilot sites receive preferential commercial terms and influence over the product roadmap for two years post-pilot.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FINAL CTA
+     ============================================================ -->
+<section class="final reveal">
+  <div class="wrap-narrow">
+    <span class="eyebrow center no-rule">Founding cohort · 2026</span>
+    <h2>The earliest signal of failure <em>is the most valuable one.</em></h2>
+    <p>If your laboratory is interested in being among the founding pilot sites, we'd be glad to hear from you.</p>
+    <a href="#waitlist" class="btn btn-primary">
+      Request pilot access
+      <span class="arrow">→</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <span>FertiSene · ES · 2026</span>
+    <span><a href="mailto:predict@fertisene.com">predict@fertisene.com</a></span>
+    <span><a href="#">Privacy</a> · <a href="#">Terms</a></span>
+  </div>
+</footer>
+
+</main>
+
+<script>
+// Shared Utilities
+const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
+
+(function() {
+
+  // ============================================================
+  // FORM SUBMIT (placeholder)
+  // ============================================================
+  const form = document.getElementById("signupForm");
+  const success = document.getElementById("formSuccess");
+  if (form) {
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      Array.from(form.children).forEach(el => {
+        if (el !== success) el.style.display = "none";
+      });
+      success.classList.add("shown");
+      success.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  }
+
+  // ============================================================
+  // SCROLL REVEAL OBSERVER
+  // ============================================================
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+      } else {
+        // Blur out when the section leaves the viewport
+        entry.target.classList.remove('is-visible');
+      }
+    });
+  }, { 
+    threshold: 0.1, 
+    rootMargin: '-10% 0px -10% 0px' // Triggers slightly before the section fully leaves/enters
+  });
+
+  document.querySelectorAll('.reveal').forEach(el => {
+    revealObserver.observe(el);
+    
+    // Specific logic for the navigation bar appearing at the waitlist section
+    if (el.id === 'waitlist') {
+      const nav = document.querySelector('nav');
+      const navTrigger = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            nav.classList.add('is-visible');
+          } else if (entry.boundingClientRect.top > 0) {
+            // Hide if scrolling back up above the section
+            nav.classList.remove('is-visible');
+          }
+        });
+      }, { threshold: 0.1 });
+      navTrigger.observe(el);
+    }
+  });
+
+  // Scroll Progress Logic
+  const progressBar = document.getElementById("progressBar");
+  const overtureSection = document.getElementById('overture-section');
+
+  window.addEventListener("scroll", () => {
+    const winScroll = window.pageYOffset || document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+    if (progressBar) {
+      progressBar.style.width = scrolled + "%";
+    }
+
+    // Overture section blur-out on scroll
+    if (overtureSection) {
+      const overtureHeight = overtureSection.offsetHeight;
+      const progress = Math.min(1, winScroll / overtureHeight);
+      overtureSection.style.filter = `blur(${progress * 20}px)`;
+      overtureSection.style.opacity = 1 - progress;
+    }
+  }, { passive: true });
+
+  (function() {
+    const container = document.getElementById('flow-journey');
+    const canvas = document.getElementById('flow-canvas');
+    if (!canvas || !container) return;
+    const flowTextContent = document.getElementById('flow-text-content');
+    const ctx = canvas.getContext('2d');
+
+    let W, H;
+    const isMobile = window.innerWidth < 768;
+
+    function resize() {
+      const dpr = window.devicePixelRatio || 1;
+      W = window.innerWidth;
+      H = window.innerHeight;
+      canvas.width  = W * dpr;
+      canvas.height = H * dpr;
+      canvas.style.width  = W + 'px';
+      canvas.style.height = H + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    const hexToRgb = h => [parseInt(h.slice(1,3),16), parseInt(h.slice(3,5),16), parseInt(h.slice(5,7),16)];
+    const vizBlend = (a, b, t) => [Math.round(a[0]+(b[0]-a[0])*t), Math.round(a[1]+(b[1]-a[1])*t), Math.round(a[2]+(b[2]-a[2])*t)];
+    const vizRgb = c => `rgb(${c[0]},${c[1]},${c[2]})`;
+
+    // Fix 1: Resolve CSS variables for Canvas
+    let COLOR_INK_3, COLOR_RULE, COLOR_RULE_2;
+    function resolveStyles() {
+      const styles = getComputedStyle(document.documentElement);
+      COLOR_INK_3 = styles.getPropertyValue('--ink-3').trim() || '#4A5868';
+      COLOR_RULE = 'rgba(0, 24, 48, 0.10)';
+      COLOR_RULE_2 = 'rgba(0, 24, 48, 0.20)';
+    }
+
+    function gauss() {
+      let u = 0, v = 0;
+      while (u === 0) u = Math.random();
+      while (v === 0) v = Math.random();
+      return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+    }
+
+    resize();
+    resolveStyles();
+    window.addEventListener('resize', resize);
+
+    const blend = (a, b, t) => [
+      Math.round(a[0]+(b[0]-a[0])*t),
+      Math.round(a[1]+(b[1]-a[1])*t),
+      Math.round(a[2]+(b[2]-a[2])*t),
+    ];
+
+    const PAD = isMobile ? { l: 60, r: 30, t: 120, b: 300 } : { l: 120, r: 80, t: 100, b: 340 };
+    const chartRect = () => ({ x: PAD.l, y: PAD.t, w: W - PAD.l - PAD.r, h: H - PAD.t - PAD.b });
+
+    // colors mapped to FertiSene tokens: teal-2, ink-3, warn
+    const lineHex = ['#3090A8', '#4A5868', '#B85842']; 
+    const lineRgb = lineHex.map(hexToRgb);
+    const baseRgb = [0, 24, 48]; // var(--ink)
+
+    function lineValue(idx, t) {
+      const base  = 0.55 + Math.sin(t * Math.PI * 1.2) * 0.06;
+      if (idx === 0) return base;
+      const noise = Math.sin(t*14)*0.04 + Math.sin(t*27)*0.02 + Math.sin(t*71+1.3)*0.012;
+      if (idx === 1) return base + noise;
+      let v = base + noise;
+      const spike = (c, w, m) => {
+        const d = Math.abs(t - c);
+        if (d < w) v += Math.cos((d / w) * Math.PI / 2) * m;
+      };
+      spike(0.22, 0.04,  0.28);
+      spike(0.50, 0.05, -0.34);
+      spike(0.78, 0.035, 0.32);
+      return Math.max(0.03, Math.min(0.97, v));
+    }
+
+    const anomalyEvents = [0.22, 0.50, 0.78];
+    const PER_LINE = isMobile ? 130 : 360;
+    const particles = [];
+
+    for (let li = 0; li < 3; li++) {
+      for (let i = 0; i < PER_LINE; i++) {
+        const xPos = i / (PER_LINE - 1);
+        const releaseStart = 0.10 + xPos * 0.55;
+        const releaseEnd   = releaseStart + 0.22;
+        const wide = Math.random() < 0.3;
+        const homeR = Math.abs(gauss()) * (wide ? 0.85 : 0.35);
+        const homeA = Math.random() * Math.PI * 2;
+        let highlighted = (li === 2) && anomalyEvents.some(e => Math.abs(xPos - e) < 0.005);
+        particles.push({ li, xPos, releaseStart, releaseEnd, homeA, homeR, channelJitter: (Math.random() - 0.5) * 60, bx: 0, by: 0, bvx: 0, bvy: 0, highlighted });
+      }
+    }
+
+    const homePos = (p) => {
+      const cx = W * 0.75; // originate from right to match hero card position
+      const cy = H * 0.45;
+      const baseR = Math.min(W, H) * 0.30;
+      return { x: cx + Math.cos(p.homeA) * p.homeR * baseR, y: cy + Math.sin(p.homeA) * p.homeR * baseR };
+    };
+
+    const targetPos = (p) => {
+      const r = chartRect();
+      return { x: r.x + r.w * p.xPos, y: r.y + r.h * (1 - lineValue(p.li, p.xPos)) };
+    };
+
+    const pathPos = (p, t) => {
+      const home = homePos(p);
+      const target = targetPos(p);
+      const channelY = (0.22 + p.li * 0.28) * H + p.channelJitter;
+      const channelX = 60;
+      const c1x = channelX;
+      const c1y = home.y + (channelY - home.y) * 0.95;
+      const c2x = channelX;
+      const c2y = target.y + (channelY - target.y) * 0.95;
+      const u = 1 - t;
+      return {
+        x: u*u*u * home.x + 3*u*u*t * c1x + 3*u*t*t * c2x + t*t*t * target.x,
+        y: u*u*u * home.y + 3*u*u*t * c1y + 3*u*t*t * c2y + t*t*t * target.y
+      };
+    };
+
+    let scrollProgress = 0;
+    function step() {
+      const rect = container.getBoundingClientRect();
+      const runway = container.offsetHeight - window.innerHeight;
+      scrollProgress = clamp(-rect.top / runway, 0, 1);
+
+      // Calculate fade and blur for the text and buttons
+      const textFadeStart = 0.15; // Start fading out when 15% of the section is scrolled
+      const textFadeEnd = 0.45;   // Fully faded out when 45% of the section is scrolled
+      const textFadeProgress = Math.max(0, Math.min(1, (scrollProgress - textFadeStart) / (textFadeEnd - textFadeStart)));
+
+      if (flowTextContent) {
+        flowTextContent.style.opacity = 1 - textFadeProgress;
+        flowTextContent.style.filter = `blur(${textFadeProgress * 10}px)`; // Max blur 10px
+        if (textFadeProgress >= 1) { // If fully faded out
+          flowTextContent.style.pointerEvents = 'none';
+        } else {
+          flowTextContent.style.pointerEvents = 'auto'; // Re-enable if visible
+        }
+      }
+
+      // Phase Choreography
+      // 0.55 - 0.70: Chart built, axes fade in
+      const chartAlpha = clamp((scrollProgress - 0.55) / 0.15, 0, 1);
+
+      // 0.70 - 0.85: 87% Stat band reveal
+      const statAlpha = clamp((scrollProgress - 0.70) / 0.15, 0, 1);
+      const flowStatBand = document.getElementById('flow-stat-band');
+      const prescriptiveOverlay = document.getElementById('flow-prescriptive-overlay');
+
+      if (flowStatBand) {
+        flowStatBand.style.opacity = statAlpha;
+        flowStatBand.style.pointerEvents = statAlpha > 0.5 ? 'auto' : 'none';
+        flowStatBand.style.transform = `translate(-50%, ${(1 - statAlpha) * 30}px)`;
+      }
+
+      // Extended hold logic: Text emerges at 90%, background blurs at 92%
+      const blurProgress = clamp((scrollProgress - 0.92) / 0.03, 0, 1);
+      const prescriptiveAlpha = clamp((scrollProgress - 0.90) / 0.03, 0, 1);
+
+      const blurVal = blurProgress * 20;
+      canvas.style.filter = `blur(${blurVal}px)`;
+
+      if (prescriptiveOverlay) {
+        prescriptiveOverlay.style.opacity = prescriptiveAlpha;
+        prescriptiveOverlay.style.pointerEvents = prescriptiveAlpha > 0.5 ? 'auto' : 'none';
+        prescriptiveOverlay.style.filter = `blur(${(1 - prescriptiveAlpha) * 10}px)`;
+      }
+
+      if (flowStatBand) {
+        flowStatBand.style.filter = `blur(${blurVal}px)`;
+        flowStatBand.style.opacity = statAlpha * (1 - blurProgress);
+      }
+
+      // Legend appears with the chart, leaves with the blur-out
+      const flowLegend = document.getElementById('flowLegend');
+      if (flowLegend) {
+        flowLegend.style.opacity = chartAlpha * (1 - blurProgress);
+      }
+
+      ctx.fillStyle = 'rgba(244, 242, 236, 0.78)'; // var(--paper) color trail
+      ctx.fillRect(0, 0, W, H);
+
+      if (chartAlpha > 0.01) {
+        const r = chartRect();
+        ctx.save(); ctx.globalAlpha = chartAlpha;
+        
+        // Axes (Fix 2: No grid lines)
+        ctx.strokeStyle = COLOR_RULE_2;
+        ctx.beginPath(); ctx.moveTo(r.x, r.y); ctx.lineTo(r.x, r.y + r.h); ctx.lineTo(r.x + r.w, r.y + r.h); ctx.stroke();
+        
+        // Titles (Fix 1: Reliable rendering)
+        ctx.fillStyle = COLOR_INK_3; ctx.font = "12px 'Inter Tight', system-ui, sans-serif"; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+        ctx.fillText('Time across the working day (24 h)', r.x + r.w / 2, r.y + r.h + 36);
+
+        // X-axis ticks: times of day a lab plans around
+        ['00:00', '06:00', '12:00', '18:00', '24:00'].forEach((t, i) => {
+          ctx.fillText(t, r.x + r.w * (i / 4), r.y + r.h + 8);
+        });
+
+        ctx.save();
+        ctx.translate(r.x - 60, r.y + r.h / 2);
+        ctx.rotate(-Math.PI / 2);
+        ctx.textBaseline = 'middle';
+        ctx.fillText('Incubator chamber temperature (°C)', 0, 0);
+        ctx.restore();
+
+        // Y-axis ticks (36.5 – 37.5 °C around the 37.0 setpoint)
+        ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+        for(let i=0; i<=5; i++) {
+          const val = (36.5 + (1 - i/5)).toFixed(1);
+          ctx.fillText(val, r.x - 8, r.y + (r.h * (i/5)));
+        }
+
+        ctx.restore();
+      }
+
+      const T = performance.now() * 0.003;
+      for (const p of particles) {
+        let x, y, color;
+        if (scrollProgress < p.releaseStart) {
+          const h = homePos(p);
+          p.bvx += (Math.random() - 0.5) * 0.10; p.bvy += (Math.random() - 0.5) * 0.10;
+          p.bvx *= 0.92; p.bvy *= 0.92;
+          p.bx = (p.bx + p.bvx) * 0.99; p.by = (p.by + p.bvy) * 0.99;
+          x = h.x + p.bx; y = h.y + p.by;
+          color = p.highlighted ? lineHex[2] : 'rgb(0, 24, 48)';
+        } else if (scrollProgress < p.releaseEnd) {
+          const t = (scrollProgress - p.releaseStart) / (p.releaseEnd - p.releaseStart);
+          const eased = t * t * (3 - 2 * t);
+          const pos = pathPos(p, eased);
+          x = pos.x; y = pos.y;
+          color = vizRgb(vizBlend(baseRgb, lineRgb[p.li], eased));
+        } else {
+          const tgt = targetPos(p);
+          x = tgt.x; y = tgt.y + Math.sin(T * 1.2 + p.xPos * 28 + p.li * 1.7) * 1.2;
+          color = lineHex[p.li];
+        }
+        ctx.fillStyle = color; ctx.beginPath(); ctx.arc(x, y, 1.7, 0, Math.PI * 2); ctx.fill();
+        if (p.highlighted && scrollProgress < p.releaseStart) {
+          ctx.strokeStyle = 'rgba(184, 88, 66, 0.4)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(x, y, 10 + Math.sin(T + p.xPos*10)*2, 0, Math.PI*2); ctx.stroke();
+        }
+      }
+      requestAnimationFrame(step);
+    }
+    step();
+  })();
+
+  // ============================================================
+  // FDD CONSOLE (interactive live demo)
+  // ============================================================
+  (function() {
+    const section = document.getElementById('fdd-console');
+    if (!section) return;
+    const canvas = document.getElementById('console-chart');
+    const cctx = canvas ? canvas.getContext('2d') : null;
+    const clockEl = document.getElementById('console-clock');
+    const chartTitleEl = document.getElementById('consoleChartTitle');
+    const feedListEl = section.querySelector('.feed-list');
+    const rxAside = section.querySelector('.console-rx');
+
+    // Live clock
+    function tick() {
+      if (!clockEl) return;
+      const d = new Date();
+      const p = n => String(n).padStart(2, '0');
+      clockEl.textContent = p(d.getHours()) + ':' + p(d.getMinutes()) + ':' + p(d.getSeconds()) + ' · SITE-01';
+    }
+    tick();
+    setInterval(tick, 1000);
+
+    const N = 84;
+    const NOMINAL_NOTE = 'FDD keeps watching — it speaks when something needs doing';
+    const SIGNOFF_NOTE = 'Embryologist sign-off · full audit trail recorded';
+
+    const SCENARIOS = {
+      'INC-03': {
+        chartTitle: 'Fault signature · INC-03 · CO₂ recovery after door events (min)',
+        vMin: 9, vMax: 19, yTicks: [10, 13, 16, 19], unit: 'm',
+        band: [10.5, 12.5], threshold: 16.5,
+        series: { base: 11.5, n1: 0.35, n2: 0.25, drift: 5.4, driftStart: 0.55 },
+        detectFrac: 0.68,
+        faultLabel: 'FDD · fault isolated: CO₂ sensor drift (F-03)',
+        leadLabel: 'lead time gained · 4 days',
+        feed: [
+          { ts: '06:42:11', tag: 'Detect', warn: true, text: 'INC-03 · recovery behaviour departed its learned baseline · +22% deviation, well below any alarm limit' },
+          { ts: '06:42:12', tag: 'Diagnose', text: 'Fault isolated to CO₂ sensor drift (F-03) — door seal, gas supply and control loop ruled out' },
+          { ts: '06:42:13', tag: 'Predict', text: 'Sensor failure projected in ~9 days · first monitoring alarm not expected for 4 days' },
+          { ts: '06:42:14', tag: 'Prescribe', text: 'Work order WO-2381 drafted · part, reroute and service window attached · awaiting embryologist sign-off' }
+        ],
+        rxLabel: 'Prescribed action · WO-2381',
+        rxTitle: 'Replace CO₂ sensor on incubator INC-03',
+        rxRows: [
+          ['Part', 'CO₂ IR sensor · in stock on site'],
+          ['Reroute', 'Active cohort → incubator INC-02 for 72 h'],
+          ['Window', 'Thu 07:00 · existing service slot, no extra visit'],
+          ['Impact', 'No active cycles affected · zero unplanned downtime'],
+          ['Lead time', '9 days before projected failure'],
+          ['Evidence', '7 precedent service cases · top match 0.91']
+        ],
+        cta: 'Approve work order →', rxNote: SIGNOFF_NOTE
+      },
+      'CRYO-01': {
+        chartTitle: 'Watch signature · CRYO-01 · LN₂ evaporation rate (% per day)',
+        vMin: 2, vMax: 6, yTicks: [2, 3, 4, 5, 6], unit: '',
+        band: [2.6, 3.4], threshold: 5,
+        series: { base: 3.0, n1: 0.10, n2: 0.07, drift: 1.2, driftStart: 0.5 },
+        detectFrac: 0.72,
+        faultLabel: 'FDD · early vacuum-jacket degradation flagged',
+        projLabel: 'alarm limit projected in ~3 weeks',
+        feed: [
+          { ts: '05:18:04', tag: 'Detect', warn: true, text: 'CRYO-01 · evaporation rate departed its learned baseline · +14% over ten days' },
+          { ts: '05:18:05', tag: 'Diagnose', text: 'Early vacuum-jacket degradation suspected — level sensor and ambient effects ruled out' },
+          { ts: '05:18:06', tag: 'Predict', text: 'Alarm limit not projected for ~3 weeks · sample safety margin comfortable' },
+          { ts: '05:18:07', tag: 'Prescribe', text: 'Vacuum integrity inspection pulled into next service visit · backup tank readiness confirmed' }
+        ],
+        rxLabel: 'Prescribed action · WO-2384',
+        rxTitle: 'Pull vacuum inspection into the next service visit',
+        rxRows: [
+          ['Action', 'Vacuum integrity inspection · CRYO-01'],
+          ['Backup', 'Backup tank readiness confirmed · capacity ok'],
+          ['Window', 'Next scheduled visit · brought forward two weeks'],
+          ['Impact', 'No samples moved · chain of custody untouched'],
+          ['Lead time', '~3 weeks before projected alarm'],
+          ['Evidence', '4 precedent service cases · top match 0.87']
+        ],
+        cta: 'Approve work order →', rxNote: SIGNOFF_NOTE
+      },
+      'INC-01': {
+        chartTitle: 'Health signature · INC-01 · CO₂ recovery after door events (min)',
+        vMin: 9, vMax: 19, yTicks: [10, 13, 16, 19], unit: 'm',
+        band: [10.5, 12.5], threshold: 16.5,
+        series: { base: 11.4, n1: 0.32, n2: 0.22, drift: 0, driftStart: 1 },
+        feed: [
+          { ts: '06:00:02', tag: 'Detect', text: 'Behaviour within learned baseline · door-open recoveries in envelope · all probes agree' },
+          { ts: '06:00:02', tag: 'Predict', text: 'No failure projected inside the 30-day horizon' },
+          { ts: '06:00:03', tag: 'Status', text: 'No open work orders · next preventive service in 24 days' }
+        ],
+        rxLabel: 'Prescribed action · none open',
+        rxTitle: 'INC-01 · no action required',
+        rxRows: [
+          ['Status', 'Healthy · behaviour within learned baseline'],
+          ['Horizon', 'No failure projected in 30 days'],
+          ['Service', 'Preventive · as scheduled, in 24 days'],
+          ['Evidence', '30-day baseline conformity · 99.7%']
+        ],
+        cta: 'No open work orders', none: true, rxNote: NOMINAL_NOTE
+      },
+      'INC-02': {
+        chartTitle: 'Health signature · INC-02 · CO₂ recovery after door events (min)',
+        vMin: 9, vMax: 19, yTicks: [10, 13, 16, 19], unit: 'm',
+        band: [10.5, 12.5], threshold: 16.5,
+        series: { base: 11.6, n1: 0.30, n2: 0.24, drift: 0, driftStart: 1 },
+        feed: [
+          { ts: '06:05:40', tag: 'Detect', text: 'Behaviour within learned baseline · all probes agree' },
+          { ts: '07:02:10', tag: 'Reroute', text: 'Hosting rerouted cohort from INC-03 for 72 h · load within learned capacity' },
+          { ts: '07:02:11', tag: 'Predict', text: 'No failure projected inside the 30-day horizon' },
+          { ts: '07:02:11', tag: 'Status', text: 'No open work orders · next preventive service in 31 days' }
+        ],
+        rxLabel: 'Prescribed action · none open',
+        rxTitle: 'INC-02 · no action required',
+        rxRows: [
+          ['Status', 'Healthy · hosting rerouted cohort from INC-03'],
+          ['Load', 'Within learned capacity envelope'],
+          ['Horizon', 'No failure projected in 30 days'],
+          ['Service', 'Preventive · as scheduled, in 31 days']
+        ],
+        cta: 'No open work orders', none: true, rxNote: NOMINAL_NOTE
+      },
+      'ULT-01': {
+        chartTitle: 'Health signature · ULT-01 · chamber temperature (°C)',
+        vMin: -82, vMax: -76, yTicks: [-82, -80, -78, -76], unit: '°',
+        band: [-80.4, -79.6], threshold: -77,
+        series: { base: -80, n1: 0.18, n2: 0.12, drift: 0, driftStart: 1 },
+        feed: [
+          { ts: '06:10:15', tag: 'Detect', text: 'Temperature stable at −80 °C · door-event recoveries within learned envelope' },
+          { ts: '06:10:15', tag: 'Predict', text: 'Compressor signature healthy · no failure projected in 30 days' },
+          { ts: '06:10:16', tag: 'Status', text: 'No open work orders · next preventive service in 41 days' }
+        ],
+        rxLabel: 'Prescribed action · none open',
+        rxTitle: 'ULT-01 · no action required',
+        rxRows: [
+          ['Status', 'Healthy · compressor signature within baseline'],
+          ['Horizon', 'No failure projected in 30 days'],
+          ['Service', 'Preventive · as scheduled, in 41 days'],
+          ['Evidence', '30-day baseline conformity · 99.9%']
+        ],
+        cta: 'No open work orders', none: true, rxNote: NOMINAL_NOTE
+      },
+      'FRG-01': {
+        chartTitle: 'Health signature · FRG-01 · chamber temperature (°C)',
+        vMin: 2, vMax: 8, yTicks: [2, 4, 6, 8], unit: '°',
+        band: [3.8, 5.2], threshold: 7,
+        series: { base: 4.5, n1: 0.20, n2: 0.14, drift: 0, driftStart: 1 },
+        feed: [
+          { ts: '06:15:30', tag: 'Detect', text: 'Temperature stable in the 2–8 °C range · within learned envelope' },
+          { ts: '06:15:30', tag: 'Predict', text: 'Door-seal and compressor signatures healthy · no failure projected' },
+          { ts: '06:15:31', tag: 'Status', text: 'No open work orders · next preventive service in 18 days' }
+        ],
+        rxLabel: 'Prescribed action · none open',
+        rxTitle: 'FRG-01 · no action required',
+        rxRows: [
+          ['Status', 'Healthy · behaviour within learned baseline'],
+          ['Horizon', 'No failure projected in 30 days'],
+          ['Service', 'Preventive · as scheduled, in 18 days'],
+          ['Evidence', '30-day baseline conformity · 99.8%']
+        ],
+        cta: 'No open work orders', none: true, rxNote: NOMINAL_NOTE
+      }
+    };
+
+    function genSeries(c) {
+      const arr = [];
+      for (let i = 0; i < N; i++) {
+        const t = i / (N - 1);
+        const noise = Math.sin(i * 2.7) * c.n1 + Math.sin(i * 1.3 + 2) * c.n2;
+        let v = c.base + noise;
+        if (c.drift && t > c.driftStart) {
+          const d = (t - c.driftStart) / (1 - c.driftStart);
+          v += d * d * c.drift;
+        }
+        arr.push(v);
+      }
+      return arr;
+    }
+
+    let S = SCENARIOS['INC-03'];
+    let pts = [], detectIdx = -1, crossIdx = -1;
+    let progress = 0, playing = false;
+
+    function renderPanes() {
+      if (chartTitleEl) chartTitleEl.textContent = S.chartTitle;
+      if (feedListEl) {
+        feedListEl.innerHTML = S.feed.map(function(f) {
+          return '<div class="feed-item' + (f.warn ? ' warn' : '') + '">' +
+                 '<span class="ts">' + f.ts + '</span>' +
+                 '<span class="tag">' + f.tag + '</span>' +
+                 '<span>' + f.text + '</span></div>';
+        }).join('');
+      }
+      if (rxAside) {
+        rxAside.innerHTML =
+          '<div class="console-pane-label">' + S.rxLabel + '</div>' +
+          '<div class="rx-inner">' +
+            '<h3>' + S.rxTitle + '</h3>' +
+            S.rxRows.map(function(r) {
+              return '<div class="rx-row"><span class="k">' + r[0] + '</span><span class="v">' + r[1] + '</span></div>';
+            }).join('') +
+            '<div class="rx-actions">' +
+              '<button type="button" class="rx-approve' + (S.none ? ' none' : '') + '"' + (S.none ? ' disabled' : '') + '>' + S.cta + '</button>' +
+              '<div class="rx-note">' + S.rxNote + '</div>' +
+            '</div>' +
+          '</div>';
+      }
+    }
+
+    function selectAsset(id, quick) {
+      const next = SCENARIOS[id];
+      if (!next) return;
+      S = next;
+      section.querySelectorAll('.fleet-item').forEach(function(el) {
+        el.classList.toggle('sel', el.getAttribute('data-asset') === id);
+      });
+      pts = genSeries(S.series);
+      detectIdx = S.detectFrac ? Math.round(N * S.detectFrac) : -1;
+      crossIdx = pts.findIndex(function(v) { return v >= S.threshold; });
+      progress = 0;
+
+      const wasLive = section.classList.contains('console-live');
+      section.classList.remove('console-live');
+      renderPanes();
+      section.classList.toggle('quick', !!quick);
+      if (wasLive || quick) {
+        void section.offsetWidth; // force style flush so reveal transitions restart
+        section.classList.add('console-live');
+        if (!playing) { playing = true; requestAnimationFrame(draw); }
+      }
+    }
+
+    // One delegated listener: asset switching + work-order approval
+    section.addEventListener('click', function(e) {
+      const btn = e.target.closest('.rx-approve');
+      if (btn) {
+        if (!btn.disabled) {
+          btn.textContent = 'Queued for sign-off ✓';
+          btn.classList.add('done');
+          btn.disabled = true;
+        }
+        return;
+      }
+      const item = e.target.closest('.fleet-item');
+      if (item && item.getAttribute('data-asset')) selectAsset(item.getAttribute('data-asset'), true);
+    });
+
+    function draw(now) {
+      if (!cctx) { playing = false; return; }
+      const dpr = window.devicePixelRatio || 1;
+      const w = canvas.clientWidth, h = canvas.clientHeight;
+      if (!w || !h) { if (playing) requestAnimationFrame(draw); return; }
+      if (canvas.width !== Math.round(w * dpr)) { canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr); }
+      cctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      cctx.clearRect(0, 0, w, h);
+
+      const padL = 48, padR = 18, padT = 24, padB = 32;
+      const cw = w - padL - padR, ch = h - padT - padB;
+      const vMin = S.vMin, vMax = S.vMax;
+      const X = i => padL + (i / (N - 1)) * cw;
+      const Y = v => padT + (1 - (v - vMin) / (vMax - vMin)) * ch;
+
+      // learned healthy band
+      cctx.fillStyle = 'rgba(48,144,168,0.10)';
+      cctx.fillRect(padL, Y(S.band[1]), cw, Y(S.band[0]) - Y(S.band[1]));
+      cctx.strokeStyle = 'rgba(48,144,168,0.45)';
+      cctx.setLineDash([4, 4]);
+      cctx.beginPath(); cctx.moveTo(padL, Y(S.band[1])); cctx.lineTo(padL + cw, Y(S.band[1])); cctx.stroke();
+
+      // fixed monitoring threshold
+      cctx.strokeStyle = 'rgba(184,88,66,0.45)';
+      cctx.beginPath(); cctx.moveTo(padL, Y(S.threshold)); cctx.lineTo(padL + cw, Y(S.threshold)); cctx.stroke();
+      cctx.setLineDash([]);
+
+      // axes
+      cctx.strokeStyle = 'rgba(0,24,48,0.25)';
+      cctx.beginPath(); cctx.moveTo(padL, padT); cctx.lineTo(padL, padT + ch); cctx.lineTo(padL + cw, padT + ch); cctx.stroke();
+
+      // labels
+      const fpx = cw < 520 ? 10 : 12;
+      cctx.fillStyle = '#4A5868';
+      cctx.font = fpx + "px 'JetBrains Mono', monospace";
+      cctx.textAlign = 'right'; cctx.textBaseline = 'middle';
+      S.yTicks.forEach(v => cctx.fillText(v + S.unit, padL - 6, Y(v)));
+      cctx.textAlign = 'center'; cctx.textBaseline = 'top';
+      cctx.fillText('-14d', X(0), padT + ch + 8);
+      cctx.fillText('-7d', X(Math.round((N - 1) / 2)), padT + ch + 8);
+      cctx.fillText('now', X(N - 1), padT + ch + 8);
+      cctx.textAlign = 'left'; cctx.textBaseline = 'middle';
+      cctx.fillStyle = 'rgba(24,120,144,0.9)';
+      cctx.fillText('learned healthy baseline · this device, this operating mode', padL + 6, Y(S.band[1]) - 7);
+      cctx.fillStyle = 'rgba(184,88,66,0.75)';
+      cctx.fillText('monitoring alarm threshold · fixed limit', padL + 6, Y(S.threshold) - 7);
+
+      // observed series, revealed by progress
+      const upto = Math.max(2, Math.floor(progress * N));
+      cctx.strokeStyle = '#001830';
+      cctx.lineWidth = 2;
+      cctx.beginPath();
+      for (let i = 0; i < upto; i++) {
+        const x = X(i), y = Y(pts[i]);
+        if (i === 0) cctx.moveTo(x, y); else cctx.lineTo(x, y);
+      }
+      cctx.stroke();
+      cctx.lineWidth = 1;
+
+      // head dot
+      const hi = upto - 1;
+      cctx.fillStyle = (detectIdx >= 0 && hi >= detectIdx) ? '#B85842' : '#187890';
+      cctx.beginPath(); cctx.arc(X(hi), Y(pts[hi]), 3.5, 0, Math.PI * 2); cctx.fill();
+
+      // FDD detection marker (teal) — where FertiSene isolates the fault
+      if (detectIdx >= 0 && upto > detectIdx) {
+        const dx = X(detectIdx), dy = Y(pts[detectIdx]);
+        cctx.strokeStyle = 'rgba(24,120,144,0.85)';
+        cctx.setLineDash([3, 3]);
+        cctx.beginPath(); cctx.moveTo(dx, padT); cctx.lineTo(dx, padT + ch); cctx.stroke();
+        cctx.setLineDash([]);
+        const pulse = 5 + Math.sin((now || 0) * 0.004) * 2;
+        cctx.strokeStyle = '#187890';
+        cctx.beginPath(); cctx.arc(dx, dy, pulse, 0, Math.PI * 2); cctx.stroke();
+        cctx.fillStyle = '#006078';
+        cctx.textAlign = 'right'; cctx.textBaseline = 'bottom';
+        cctx.fillText(S.faultLabel, dx - 8, padT + 14);
+
+        // projection note when no monitoring alarm is anywhere near yet
+        if (S.projLabel && crossIdx < 0) {
+          cctx.fillStyle = '#4A5868';
+          cctx.textAlign = 'right'; cctx.textBaseline = 'bottom';
+          cctx.fillText(S.projLabel, padL + cw - 6, padT + ch - 10);
+        }
+      }
+
+      // Monitoring alarm marker (red) — where a fixed-limit system would first react
+      if (crossIdx >= 0 && upto > crossIdx && detectIdx >= 0) {
+        const dx = X(detectIdx), ax = X(crossIdx);
+        cctx.strokeStyle = 'rgba(184,88,66,0.75)';
+        cctx.setLineDash([3, 3]);
+        cctx.beginPath(); cctx.moveTo(ax, padT); cctx.lineTo(ax, padT + ch); cctx.stroke();
+        cctx.setLineDash([]);
+        if (ax - dx > 260) {
+          cctx.fillStyle = '#B85842';
+          cctx.textAlign = 'right'; cctx.textBaseline = 'bottom';
+          cctx.fillText('first monitoring alarm', ax - 8, padT + 14);
+        }
+
+        // lead-time bracket between FDD detection and the monitoring alarm
+        const by = padT + 32;
+        cctx.strokeStyle = 'rgba(0,24,48,0.55)';
+        cctx.beginPath();
+        cctx.moveTo(dx, by - 5); cctx.lineTo(dx, by + 5);
+        cctx.moveTo(dx, by); cctx.lineTo(ax, by);
+        cctx.moveTo(ax, by - 5); cctx.lineTo(ax, by + 5);
+        cctx.stroke();
+        if (ax - dx > 170) {
+          cctx.fillStyle = '#001830';
+          cctx.textAlign = 'center'; cctx.textBaseline = 'top';
+          cctx.fillText(S.leadLabel || 'lead time gained', (dx + ax) / 2, by + 8);
+        }
+      }
+
+      if (playing) {
+        if (progress < 1) progress = Math.min(1, progress + 0.006);
+        requestAnimationFrame(draw);
+      }
+    }
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          section.classList.add('console-live');
+          if (!playing) { playing = true; requestAnimationFrame(draw); }
+        } else {
+          playing = false;
+          if (e.boundingClientRect.top > 0) {
+            // replay when scrolling back down
+            section.classList.remove('console-live');
+            progress = 0;
+          }
+        }
+      });
+    }, { threshold: 0.25 });
+    io.observe(section);
+
+    // Initial state
+    selectAsset('INC-03', false);
+  })();
+
+  // ============================================================
+  // PILOT JOURNEY CHOREOGRAPHY
+  // ============================================================
+  (function() {
+    const container = document.getElementById('pilot');
+    if (!container || !container.classList.contains('pilot-journey')) return;
+    const headline = document.getElementById('pilotHeadline');
+    const blocks = Array.from(container.querySelectorAll('.p-block'));
+    const foot = document.getElementById('pilotFoot');
+
+    function onScroll() {
+      const rect = container.getBoundingClientRect();
+      const runway = container.offsetHeight - window.innerHeight;
+      if (runway <= 0) return;
+      const p = clamp(-rect.top / runway, 0, 1);
+
+      // Phase 1: headline fades in at the centre (same treatment as the flow overlay)
+      const a = clamp(p / 0.10, 0, 1);
+      if (headline) {
+        headline.style.opacity = a;
+        headline.style.filter = 'blur(' + ((1 - a) * 12) + 'px)';
+      }
+
+      // Phase 2: headline lifts, blocks build in one at a time
+      if (headline) headline.classList.toggle('lift', p >= 0.18);
+      blocks.forEach((b, i) => {
+        b.classList.toggle('placed', p >= 0.26 + i * 0.11);
+      });
+
+      // Phase 3: closing note + CTA
+      if (foot) foot.classList.toggle('placed', p >= 0.84);
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    onScroll();
+  })();
+
+})();
+</script>
+
+</body>
+</html>
