@@ -613,7 +613,7 @@
      STAT BAND
      ============================================================ */
   .stat-band {
-    padding: 200px 0; /* Increased spacing around the 87% section */
+    padding: 200px 0; /* stat band spacing */
     border-bottom: 1px solid var(--rule);
     background: var(--landing-bg); /* Changed to clear blue-white */
   }
@@ -1204,61 +1204,63 @@
   }
   .pilot-headline.lift p { opacity: 0; }
 
-  .pilot-blocks {
+  .pilot-stage {
     position: absolute;
-    top: 30%;
+    top: 28%;
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
-    max-width: 820px;
+    max-width: 700px;
     padding: 0 32px;
+    opacity: 0;
+    will-change: opacity;
   }
-  .p-block {
-    display: grid;
-    grid-template-columns: 56px 1fr;
-    gap: 20px;
-    align-items: start;
-    padding: 18px 26px 20px;
+  .pilot-stack {
+    position: relative;
+    height: 250px;
+  }
+  .p-card {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    padding: 32px 44px;
     background: var(--paper);
     border: 1px solid var(--rule-2);
-    opacity: 0;
-    transform: translateY(-34px) scale(0.97);
-    filter: blur(8px);
-    transition: opacity 0.65s cubic-bezier(0.25, 1, 0.5, 1),
-                transform 0.65s cubic-bezier(0.34, 1.4, 0.5, 1),
-                filter 0.65s ease;
-    will-change: opacity, transform, filter;
+    border-radius: 6px;
+    box-shadow: 0 28px 56px -36px rgba(0, 24, 48, 0.45);
+    transform-origin: center center;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
   }
-  .p-block + .p-block { margin-top: -1px; }
-  .p-block.placed {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    filter: blur(0);
-  }
-  .p-block .p-num {
+  .p-card .p-num {
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
     color: var(--teal);
-    padding-top: 6px;
   }
-  .p-block strong {
+  .p-card .p-num .of { color: var(--ink-4); }
+  .p-card strong {
     display: block;
     font-family: 'Source Serif 4', serif;
     font-weight: 400;
-    font-size: 19px;
+    font-size: 26px;
     color: var(--ink);
-    margin-bottom: 5px;
-    letter-spacing: -0.005em;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    font-variation-settings: "opsz" 32;
   }
-  .p-block .desc {
+  .p-card .desc {
     display: block;
-    color: var(--ink-2);
-    font-size: 14.5px;
-    line-height: 1.55;
+    color: var(--ink-3);
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 540px;
   }
   .pilot-foot {
-    margin-top: 28px;
+    margin-top: 52px;
     text-align: center;
     opacity: 0;
     transform: translateY(14px);
@@ -1273,19 +1275,22 @@
     margin-bottom: 18px;
   }
   @media (max-height: 780px) {
-    .pilot-blocks { top: 27%; }
-    .p-block { padding: 12px 20px 14px; }
-    .p-block strong { font-size: 17px; }
-    .p-block .desc { font-size: 13.5px; }
-    .pilot-foot { margin-top: 16px; }
+    .pilot-headline.lift { top: 4%; }
+    .pilot-stage { top: 25%; }
+    .pilot-stack { height: 230px; }
+    .p-card { padding: 26px 36px; }
+    .p-card strong { font-size: 22px; }
+    .p-card .desc { font-size: 14px; }
+    .pilot-foot { margin-top: 40px; }
   }
   @media (max-width: 768px) {
     .pilot-journey { height: 320vh; }
-    .pilot-blocks { top: 24%; padding: 0 20px; }
+    .pilot-stage { top: 24%; padding: 0 20px; }
     .pilot-headline.lift { top: 4%; transform: translate(-50%, 0) scale(0.9); }
-    .p-block { grid-template-columns: 1fr; gap: 4px; padding: 12px 16px 14px; }
-    .p-block strong { font-size: 16.5px; }
-    .p-block .desc { font-size: 13px; }
+    .pilot-stack { height: 320px; }
+    .p-card { padding: 24px 26px; }
+    .p-card strong { font-size: 21px; }
+    .p-card .desc { font-size: 13.5px; }
   }
 
   /* ============================================================
@@ -1516,7 +1521,8 @@
     border-bottom: 1px solid var(--rule);
   }
   .faq-list {
-    border-top: 1px solid var(--ink);
+    counter-reset: faq;
+    border-top: 1px solid var(--rule-2);
   }
   details.faq-item {
     border-bottom: 1px solid var(--rule);
@@ -1525,44 +1531,54 @@
   details.faq-item summary {
     list-style: none;
     cursor: pointer;
-    padding: 28px 0;
+    padding: 26px 0;
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 72px 1fr auto;
     gap: 24px;
-    align-items: center;
+    align-items: start;
     font-family: 'Source Serif 4', serif;
     font-weight: 400;
-    font-size: 21px;
-    line-height: 1.3;
+    font-size: 20px;
+    line-height: 1.35;
     color: var(--ink);
     transition: color 0.2s ease;
     font-variation-settings: "opsz" 32;
   }
+  details.faq-item summary::before {
+    counter-increment: faq;
+    content: "Q·0" counter(faq);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--ink-4);
+    padding-top: 8px;
+  }
   details.faq-item summary::-webkit-details-marker { display: none; }
   details.faq-item summary:hover { color: var(--teal); }
+  details.faq-item[open] summary::before { color: var(--teal); }
   .faq-toggle {
-    width: 32px; height: 32px;
-    border: 1px solid var(--rule-2);
-    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--ink-3);
-    transition: all 0.25s ease;
+    padding-top: 2px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--ink-4);
+    transition: transform 0.25s ease, color 0.25s ease;
     flex-shrink: 0;
   }
   details[open] .faq-toggle {
     transform: rotate(45deg);
-    border-color: var(--teal);
     color: var(--teal);
   }
   details.faq-item[open] summary { color: var(--ink); }
   .faq-body {
-    padding: 0 64px 32px 0;
+    padding: 0 64px 32px 96px;
     color: var(--ink-2);
-    font-size: 16px;
+    font-size: 15.5px;
     line-height: 1.65;
-    max-width: 720px;
+    max-width: 800px;
   }
 
   /* ============================================================
@@ -1644,7 +1660,8 @@
     .process-grid { grid-template-columns: 1fr; }
     form.signup { padding: 24px; }
     .console-chart-wrap { height: 240px; }
-    .faq-body { padding-right: 0; }
+    details.faq-item summary { grid-template-columns: 48px 1fr auto; gap: 14px; font-size: 18px; }
+    .faq-body { padding: 0 0 28px 62px; }
     .overture { padding-top: 120px; padding-bottom: 120px; } /* Adjusted for smaller screens */
   }
 
@@ -1656,6 +1673,11 @@
     body.scrolled-past-overture .overture { transition: opacity 0.3s ease; }
   }
 </style>
+<!-- HubSpot tracking code (EU portal 148924331) — OPTIONAL.
+     Uncomment to enable analytics + associate form submissions with visitor sessions.
+     Note: this sets tracking cookies, so under GDPR you should have a cookie
+     consent banner in place before enabling it. Form submissions work without it. -->
+<!-- <script type="text/javascript" id="hs-script-loader" async defer src="//js-eu1.hs-scripts.com/148924331.js"></script> -->
 </head>
 <body>
 
@@ -1962,16 +1984,16 @@
     <canvas id="flow-canvas"></canvas>
 
     <div class="flow-legend" id="flowLegend" style="opacity:0;">
-      <div class="item"><span class="bar" style="background:#3090A8"></span>Target setpoint · 37.0 °C</div>
-      <div class="item"><span class="bar" style="background:#4A5868"></span>Learned healthy behaviour</div>
-      <div class="item"><span class="bar" style="background:#B85842"></span>Developing fault · flagged</div>
+      <div class="item"><span class="bar" style="background:#B85842"></span>Reactive · run to failure</div>
+      <div class="item"><span class="bar" style="background:#4A5868"></span>Preventive · fixed schedule</div>
+      <div class="item"><span class="bar" style="background:#3090A8"></span>Predictive · condition-based</div>
     </div>
     
     <div class="wrap" id="flow-text-content" style="position: relative; z-index: 2;">
       <div class="section-head">
-        <span class="eyebrow">From signal to behavior</span>
-        <h2>Every dot becomes a story. <em>Three lines tell you what to do.</em></h2>
-        <p>Target setpoint, learned healthy behaviour, and a developing fault — resolved live from a single incubator's temperature stream across one working day.</p>
+        <span class="eyebrow">Three strategies · one year</span>
+        <h2>Run to failure. Service on schedule. <em>Or act on evidence.</em></h2>
+        <p>Every dot is maintenance spend. Watch one year of reactive, preventive and predictive maintenance resolve into three cumulative cost curves — same fleet, same underlying faults, same laboratory.</p>
       </div>
       <div class="hero-actions" style="pointer-events: auto;">
         <a href="#waitlist" class="btn btn-primary">
@@ -1987,12 +2009,12 @@
     <!-- Integrated stat reveal -->
     <div id="flow-stat-band" class="flow-overlay-stat">
       <div class="stat-number">
-        87%
-        <sub>of equipment incidents reviewed</sub>
+        50%
+        <sub>less unplanned downtime</sub>
       </div>
       <div class="stat-prose">
-        In our retrospective analysis of incubator service logs, <strong>roughly nine in ten failures showed a measurable signal in the sensor data days before the incident</strong> — drift in CO₂ recovery time, lengthening temperature recovery, gas flow anomalies.
-        <span class="footnote">Based on engineer service notes and sensor logs from partner clinics, 2023–2025.</span>
+        McKinsey's industrial analytics research finds that condition-based, predictive maintenance <strong>cuts unplanned downtime by up to half</strong> — and lowers overall maintenance cost by roughly a fifth to a quarter compared with conventional strategies.
+        <span class="footnote">McKinsey &amp; Company, published research on predictive maintenance in industrial operations. Cross-industry benchmark figures, cited for context — not FertiSene pilot results.</span>
       </div>
     </div>
 
@@ -2000,8 +2022,8 @@
     <div id="flow-prescriptive-overlay">
       <div class="section-head" style="margin: 0 auto;">
         <span class="eyebrow center">Predictive becomes Prescriptive</span>
-        <h2>It's not enough to predict a fault. <em>The system has to tell you what to do about it.</em></h2>
-        <p style="margin: 24px auto 0;">Existing monitoring tells you a threshold has been crossed. Predictive tools tell you a failure is coming. FertiSene goes one step further — it produces the action, the part, and the work order.</p>
+        <h2>The predictive curve is the cheapest line on that chart — <em>but only if the prediction becomes an action.</em></h2>
+        <p style="margin: 24px auto 0;">Reactive maintenance pays for failures. Preventive pays for the calendar. Predictive tools tell you a failure is coming — FertiSene goes one step further and produces the action, the part, and the work order.</p>
       </div>
     </div>
   </div>
@@ -2097,38 +2119,30 @@
       <p>Three to five clinics across the EU. Six- to twelve-week structured studies, offered without licence fee in exchange for collaboration on methodology and outcomes review.</p>
     </div>
 
-    <div class="pilot-blocks">
-      <div class="p-block">
-        <div class="p-num">01</div>
-        <div>
+    <div class="pilot-stage" id="pilotStage">
+      <div class="pilot-stack" id="pilotStack">
+        <div class="p-card">
+          <div class="p-num">01 <span class="of">/ 05</span></div>
           <strong>No licence fee for the pilot period</strong>
           <span class="desc">Twelve-week study window. Software, hosting, and embryologist-facing dashboard included. No cost to the clinic.</span>
         </div>
-      </div>
-      <div class="p-block">
-        <div class="p-num">02</div>
-        <div>
+        <div class="p-card">
+          <div class="p-num">02 <span class="of">/ 05</span></div>
           <strong>Methodology defined jointly</strong>
           <span class="desc">Baseline period, fault-family scope, and success criteria agreed before instrumentation begins. The clinic's lab director is co-author of the protocol.</span>
         </div>
-      </div>
-      <div class="p-block">
-        <div class="p-num">03</div>
-        <div>
+        <div class="p-card">
+          <div class="p-num">03 <span class="of">/ 05</span></div>
           <strong>Structured outcomes report</strong>
           <span class="desc">At pilot end, you receive a written report of detection precision and recall per fault family, lead time on prevented incidents, and downtime saved per device.</span>
         </div>
-      </div>
-      <div class="p-block">
-        <div class="p-num">04</div>
-        <div>
+        <div class="p-card">
+          <div class="p-num">04 <span class="of">/ 05</span></div>
           <strong>Optional joint publication</strong>
           <span class="desc">De-identified findings may be co-authored for peer-reviewed submission. The clinic retains right of refusal at every stage.</span>
         </div>
-      </div>
-      <div class="p-block">
-        <div class="p-num">05</div>
-        <div>
+        <div class="p-card">
+          <div class="p-num">05 <span class="of">/ 05</span></div>
           <strong>Data ownership preserved</strong>
           <span class="desc">Sensor data, CRM content, and all derived insights remain the clinic's property. Data-use agreement signed before any data leaves the lab.</span>
         </div>
@@ -2180,62 +2194,9 @@
       </div>
 
       <div class="field">
-        <label for="role">Role <span class="req">*</span></label>
-        <select id="role" name="role" required>
-          <option value="">Select your role</option>
-          <option>Laboratory Director</option>
-          <option>Senior Embryologist</option>
-          <option>Quality Manager</option>
-          <option>Medical Director</option>
-          <option>Clinic Owner / CEO</option>
-          <option>Biomedical Engineer</option>
-          <option>Other</option>
-        </select>
-      </div>
-
-      <div class="field">
         <label for="email">Work email <span class="req">*</span></label>
         <input type="email" id="email" name="email" required autocomplete="email">
         <div class="field-help">We respond from a real person at this address.</div>
-      </div>
-
-      <div class="field">
-        <label for="clinic">Clinic or laboratory name <span class="req">*</span></label>
-        <input type="text" id="clinic" name="clinic" required>
-      </div>
-
-      <div class="field-row">
-        <div class="field">
-          <label for="country">Country <span class="req">*</span></label>
-          <input type="text" id="country" name="country" required autocomplete="country-name">
-        </div>
-        <div class="field">
-          <label for="cycles">Cycles per year</label>
-          <select id="cycles" name="cycles">
-            <option value="">Approximate</option>
-            <option>Under 250</option>
-            <option>250 – 750</option>
-            <option>750 – 2,000</option>
-            <option>2,000 – 5,000</option>
-            <option>Over 5,000</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="field">
-        <label for="equipment">Primary incubator platforms in use</label>
-        <input type="text" id="equipment" name="equipment" placeholder="e.g. EmbryoScope+, G210, MIRI TL, Cook MINC, Geri">
-        <div class="field-help">FertiSene is OEM-agnostic. We list this only to scope the pilot.</div>
-      </div>
-
-      <div class="field">
-        <label for="notes">Anything we should know</label>
-        <textarea id="notes" name="notes" placeholder="Particular pain points, recent equipment incidents, regulatory framework, internal stakeholders…"></textarea>
-      </div>
-
-      <div class="check-row">
-        <input type="checkbox" id="consent" required>
-        <label for="consent">I confirm I am authorised to engage on behalf of my organisation regarding evaluation of laboratory equipment monitoring tools. We may process this submission under our privacy policy to assess pilot fit.</label>
       </div>
 
       <div class="submit-row">
@@ -2332,19 +2293,84 @@ const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
 (function() {
 
   // ============================================================
-  // FORM SUBMIT (placeholder)
+  // FORM SUBMIT → HubSpot Forms API (EU portal)
+  // 1. Create the form in HubSpot (see field mapping below)
+  // 2. Paste its Form GUID into HUBSPOT_FORM_GUID
   // ============================================================
+  const HUBSPOT_PORTAL_ID = "148924331";
+  const HUBSPOT_FORM_GUID = "fa2bb277-5770-43ce-830c-28da1ea3f6d3";
+
   const form = document.getElementById("signupForm");
   const success = document.getElementById("formSuccess");
   if (form) {
-    form.addEventListener("submit", function(e) {
+    form.addEventListener("submit", async function(e) {
       e.preventDefault();
       if (!form.checkValidity()) { form.reportValidity(); return; }
-      Array.from(form.children).forEach(el => {
-        if (el !== success) el.style.display = "none";
-      });
-      success.classList.add("shown");
-      success.scrollIntoView({ behavior: "smooth", block: "center" });
+
+      const btn = form.querySelector("button.submit");
+      const note = form.querySelector(".submit-note");
+      btn.disabled = true;
+      btn.textContent = "Sending…";
+
+      const val = id => { const el = document.getElementById(id); return el ? el.value.trim() : ""; };
+
+      // Map page inputs → HubSpot contact property internal names.
+      // These must exist on the HubSpot form with these exact internal names.
+      const fields = [
+        { objectTypeId: "0-1", name: "firstname", value: val("firstName") },
+        { objectTypeId: "0-1", name: "lastname",  value: val("lastName") },
+        { objectTypeId: "0-1", name: "email",     value: val("email") }
+      ].filter(f => f.value !== "");
+
+      const getCookie = n => {
+        const m = document.cookie.match("(^|;)\\s*" + n + "\\s*=\\s*([^;]+)");
+        return m ? m.pop() : "";
+      };
+
+      const payload = {
+        fields: fields,
+        context: {
+          pageUri: location.href,
+          pageName: document.title
+        },
+        legalConsentOptions: {
+          consent: {
+            consentToProcess: true,
+            text: "By submitting, you consent to FertiSene processing this application to assess pilot fit."
+          }
+        }
+      };
+      const hutk = getCookie("hubspotutk");
+      if (hutk) payload.context.hutk = hutk;
+
+      try {
+        const res = await fetch(
+          "https://api-eu1.hsforms.com/submissions/v3/integration/submit/" +
+          HUBSPOT_PORTAL_ID + "/" + HUBSPOT_FORM_GUID,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          }
+        );
+        if (!res.ok) {
+          const body = await res.text();
+          throw new Error("HubSpot " + res.status + ": " + body);
+        }
+        Array.from(form.children).forEach(el => {
+          if (el !== success) el.style.display = "none";
+        });
+        success.classList.add("shown");
+        success.scrollIntoView({ behavior: "smooth", block: "center" });
+      } catch (err) {
+        console.error("Form submission failed:", err);
+        btn.disabled = false;
+        btn.textContent = "Submit application";
+        if (note) {
+          note.textContent = "Couldn't send just now — please try again, or email predict@fertisene.com.";
+          note.style.color = "var(--warn)";
+        }
+      }
     });
   }
 
@@ -2460,25 +2486,34 @@ const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
     const PAD = isMobile ? { l: 60, r: 30, t: 120, b: 300 } : { l: 120, r: 80, t: 100, b: 340 };
     const chartRect = () => ({ x: PAD.l, y: PAD.t, w: W - PAD.l - PAD.r, h: H - PAD.t - PAD.b });
 
-    // colors mapped to FertiSene tokens: teal-2, ink-3, warn
+    // strategy colors: 0 predictive (teal-2) · 1 preventive (ink-3) · 2 reactive (warn)
     const lineHex = ['#3090A8', '#4A5868', '#B85842']; 
     const lineRgb = lineHex.map(hexToRgb);
     const baseRgb = [0, 24, 48]; // var(--ink)
 
+    // Cumulative maintenance cost across one year, indexed so the
+    // reactive year lands near 100. All three curves are monotonic.
+    const stepUp = (t, c, w) => {
+      const x = clamp((t - (c - w)) / (2 * w), 0, 1);
+      return x * x * (3 - 2 * x); // smoothstep
+    };
     function lineValue(idx, t) {
-      const base  = 0.55 + Math.sin(t * Math.PI * 1.2) * 0.06;
-      if (idx === 0) return base;
-      const noise = Math.sin(t*14)*0.04 + Math.sin(t*27)*0.02 + Math.sin(t*71+1.3)*0.012;
-      if (idx === 1) return base + noise;
-      let v = base + noise;
-      const spike = (c, w, m) => {
-        const d = Math.abs(t - c);
-        if (d < w) v += Math.cos((d / w) * Math.PI / 2) * m;
-      };
-      spike(0.22, 0.04,  0.28);
-      spike(0.50, 0.05, -0.34);
-      spike(0.78, 0.035, 0.32);
-      return Math.max(0.03, Math.min(0.97, v));
+      let cost; // 0..1 of chart height, higher = more spent
+      if (idx === 0) {
+        // Predictive — condition-based: gentle slope, one planned intervention
+        cost = 0.04 + 0.22 * t + 0.04 * stepUp(t, 0.52, 0.025);
+      } else if (idx === 1) {
+        // Preventive — fixed-interval servicing: a quarterly staircase
+        cost = 0.04 + 0.14 * t;
+        [0.24, 0.49, 0.74, 0.96].forEach(c => { cost += 0.095 * stepUp(t, c, 0.02); });
+      } else {
+        // Reactive — run to failure: cheap until it very much isn't
+        cost = 0.03 + 0.05 * t;
+        cost += 0.27 * stepUp(t, 0.22, 0.022);
+        cost += 0.29 * stepUp(t, 0.50, 0.025);
+        cost += 0.26 * stepUp(t, 0.78, 0.02);
+      }
+      return clamp(cost, 0.02, 0.97);
     }
 
     const anomalyEvents = [0.22, 0.50, 0.78];
@@ -2551,7 +2586,7 @@ const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
       // 0.55 - 0.70: Chart built, axes fade in
       const chartAlpha = clamp((scrollProgress - 0.55) / 0.15, 0, 1);
 
-      // 0.70 - 0.85: 87% Stat band reveal
+      // 0.70 - 0.85: 50% stat band reveal
       const statAlpha = clamp((scrollProgress - 0.70) / 0.15, 0, 1);
       const flowStatBand = document.getElementById('flow-stat-band');
       const prescriptiveOverlay = document.getElementById('flow-prescriptive-overlay');
@@ -2599,10 +2634,10 @@ const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
         
         // Titles (Fix 1: Reliable rendering)
         ctx.fillStyle = COLOR_INK_3; ctx.font = "12px 'Inter Tight', system-ui, sans-serif"; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
-        ctx.fillText('Time across the working day (24 h)', r.x + r.w / 2, r.y + r.h + 36);
+        ctx.fillText('Months of operation · one year', r.x + r.w / 2, r.y + r.h + 36);
 
-        // X-axis ticks: times of day a lab plans around
-        ['00:00', '06:00', '12:00', '18:00', '24:00'].forEach((t, i) => {
+        // X-axis ticks: one year of operation
+        ['Jan', 'Apr', 'Jul', 'Oct', 'Dec'].forEach((t, i) => {
           ctx.fillText(t, r.x + r.w * (i / 4), r.y + r.h + 8);
         });
 
@@ -2610,14 +2645,13 @@ const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
         ctx.translate(r.x - 60, r.y + r.h / 2);
         ctx.rotate(-Math.PI / 2);
         ctx.textBaseline = 'middle';
-        ctx.fillText('Incubator chamber temperature (°C)', 0, 0);
+        ctx.fillText('Cumulative maintenance cost · indexed (reactive year = 100)', 0, 0);
         ctx.restore();
 
-        // Y-axis ticks (36.5 – 37.5 °C around the 37.0 setpoint)
+        // Y-axis ticks: cost index 0–100
         ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
         for(let i=0; i<=5; i++) {
-          const val = (36.5 + (1 - i/5)).toFixed(1);
-          ctx.fillText(val, r.x - 8, r.y + (r.h * (i/5)));
+          ctx.fillText(String(100 - i * 20), r.x - 8, r.y + (r.h * (i/5)));
         }
 
         ctx.restore();
@@ -3048,8 +3082,10 @@ const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
     const container = document.getElementById('pilot');
     if (!container || !container.classList.contains('pilot-journey')) return;
     const headline = document.getElementById('pilotHeadline');
-    const blocks = Array.from(container.querySelectorAll('.p-block'));
+    const stage = document.getElementById('pilotStage');
+    const cards = Array.from(container.querySelectorAll('.p-card'));
     const foot = document.getElementById('pilotFoot');
+    const CARDN = cards.length;
 
     function onScroll() {
       const rect = container.getBoundingClientRect();
@@ -3057,21 +3093,49 @@ const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
       if (runway <= 0) return;
       const p = clamp(-rect.top / runway, 0, 1);
 
-      // Phase 1: headline fades in at the centre (same treatment as the flow overlay)
+      // Phase 1: headline fades in at the centre, then lifts
       const a = clamp(p / 0.10, 0, 1);
       if (headline) {
         headline.style.opacity = a;
         headline.style.filter = 'blur(' + ((1 - a) * 12) + 'px)';
+        headline.classList.toggle('lift', p >= 0.16);
       }
 
-      // Phase 2: headline lifts, blocks build in one at a time
-      if (headline) headline.classList.toggle('lift', p >= 0.18);
-      blocks.forEach((b, i) => {
-        b.classList.toggle('placed', p >= 0.26 + i * 0.11);
+      // Phase 2: card stage rises into view under the lifted headline
+      const sIn = clamp((p - 0.16) / 0.08, 0, 1);
+      if (stage) {
+        stage.style.opacity = sIn;
+        stage.style.transform = 'translate(-50%, ' + ((1 - sIn) * 28).toFixed(2) + 'px)';
+      }
+
+      // Phase 3: scroll-driven peel — the front card scales down and
+      // sinks behind while the next card steps forward from the stack.
+      const idx = clamp((p - 0.26) / 0.52, 0, 1) * (CARDN - 1);
+      cards.forEach((card, i) => {
+        const d = i - idx;
+        let y, s, o, z;
+        if (d >= 0) {
+          // waiting in the stack — edges peek out below the front card
+          y = d * 16;
+          s = 1 - d * 0.05;
+          o = 1;
+          z = 60 - Math.round(d * 10);
+        } else {
+          // peeled — shrink, drift up slightly, fade, drop behind
+          const t = clamp(-d, 0, 1);
+          y = -12 * t;
+          s = 1 - 0.10 * t;
+          o = 1 - clamp(t * 1.7, 0, 1);
+          z = t > 0.15 ? 20 - i : 60;
+        }
+        card.style.transform = 'translateY(' + y.toFixed(2) + 'px) scale(' + s.toFixed(4) + ')';
+        card.style.opacity = o.toFixed(3);
+        card.style.zIndex = z;
+        card.style.pointerEvents = o > 0.5 ? 'auto' : 'none';
       });
 
-      // Phase 3: closing note + CTA
-      if (foot) foot.classList.toggle('placed', p >= 0.84);
+      // Phase 4: closing note + CTA
+      if (foot) foot.classList.toggle('placed', p >= 0.82);
     }
 
     window.addEventListener('scroll', onScroll, { passive: true });
