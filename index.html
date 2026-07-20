@@ -139,7 +139,6 @@
 
   #flow-journey .wrap {
     margin-left: 0;
-    padding-left: 140px; /* Offset to stay clear of the dots' leftward flight bulge */
   }
 
   .flow-caption {
@@ -1743,6 +1742,7 @@
     justify-content: center;
     z-index: 1000;
     opacity: 1;
+    transition: opacity 0.5s ease;
   }
 
   /* Logo Styling */
@@ -1750,6 +1750,7 @@
     width: 300px;
     height: auto;
     opacity: 0;
+    transition: opacity 1.5s ease;
   }
 
   /* Center content */
@@ -1761,6 +1762,7 @@
     width: 100vw;
     height: 90vh;
     opacity: 0;
+    transition: opacity 0.5s ease;
   }
 
   /* Neural Circuit Background Animation */
@@ -1867,19 +1869,28 @@
 
 </div>
 
-<!-- GSAP for the original splash timeline -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script>
 (function () {
   // Lock scroll while splash is up
   document.body.classList.add("fs-lock");
 
-  // Original GSAP timeline — unchanged
-  gsap.timeline()
-    .to("#fertiSplash .logo",      { opacity: 1, duration: 1.5 })
-    .to("#fertiSplash .preloader", { opacity: 0, duration: 0.5, delay: 1 })
-    .to("#fertiSplash .preloader", { display: "none" })
-    .to("#fertiSplash .content",   { opacity: 1, duration: 0.5 });
+  // Intro reveal — plain CSS transitions, no external animation library.
+  // (Previously depended on GSAP loaded from a CDN; if that request was
+  // blocked or failed, the splash could never dismiss and the whole page
+  // stayed locked with overflow:hidden. This has no external dependency.)
+  const introLogo = document.querySelector("#fertiSplash .logo");
+  const introPreloader = document.querySelector("#fertiSplash .preloader");
+  const introContent = document.querySelector("#fertiSplash .content");
+  requestAnimationFrame(function () {
+    if (introLogo) introLogo.style.opacity = 1;
+  });
+  setTimeout(function () {
+    if (introPreloader) {
+      introPreloader.style.opacity = 0;
+      setTimeout(function () { introPreloader.style.display = "none"; }, 500);
+    }
+    if (introContent) introContent.style.opacity = 1;
+  }, 2500);
 
   // Original mouse follow effect — scoped to splash
   const innerCircle = document.querySelector("#fertiSplash .inner-circle");
@@ -1939,6 +1950,14 @@
       document.removeEventListener("keydown", onKey);
     }
   });
+
+  // Safety net: never leave a visitor stuck behind the splash for any
+  // reason (script error elsewhere, unexpected browser quirk, etc).
+  setTimeout(function () {
+    if (splash && splash.parentNode && !splash.classList.contains("fs-out")) {
+      dismiss();
+    }
+  }, 8000);
 })();
 </script>
 
@@ -2443,7 +2462,9 @@ const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
     const isMobile = window.innerWidth < 768;
 
     function resize() {
-      const dpr = window.devicePixelRatio || 1;
+      // Cap DPR at 2 — 3x/4x panels don't add visible quality here and
+      // would otherwise multiply the per-frame pixel-fill cost.
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       W = window.innerWidth;
       H = window.innerHeight;
       canvas.width  = W * dpr;
@@ -2451,6 +2472,52 @@ const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
       canvas.style.width  = W + 'px';
       canvas.style.height = H + 'px';
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      updateSafeZone();
+    }
+
+    // Keep the idle particle cluster and its flight channel clear of the
+    // headline/paragraph, wherever that text actually lands — instead of
+    // the fixed pixel offsets this used to rely on (a 140px CSS padding
+    // hack paired with a hardcoded 60px flight channel), both of which
+    // only happened to work at one specific viewport size.
+    let cluster = { cx: 0, cy: 0, r: 0 };
+    let channelX = 60;
+    let channelBand = { top: 0.22, step: 0.28 }; // fraction of H, one row per line (li 0..2)
+    function updateSafeZone() {
+      const margin = 32;
+      const minR = Math.min(W, H) * 0.12;
+      const maxR = Math.min(W, H) * 0.30;
+      const textRect = flowTextContent
+        ? flowTextContent.getBoundingClientRect()
+        : { left: 0, right: 0, top: 0, bottom: 0 };
+
+      const rightSpace = W - textRect.right - margin;
+      if (rightSpace >= minR * 2) {
+        // Plenty of room beside the text (typical desktop) — park the
+        // cluster to its right, and route the flight channel through
+        // that same strip so nothing ever crosses back over the text.
+        cluster.r = clamp(rightSpace / 2, minR, maxR);
+        cluster.cx = textRect.right + margin + cluster.r;
+        cluster.cy = H * 0.45;
+        channelX = textRect.right + margin;
+        channelBand = { top: 0.22, step: 0.28 };
+      } else {
+        // Text spans most of the width (narrow/mobile viewports) — there's
+        // no horizontal gap to route through, so park both the cluster
+        // and the flight channel below the text, in whatever vertical
+        // room the sticky viewport has left.
+        const belowSpace = H - textRect.bottom - margin;
+        cluster.r = clamp(belowSpace / 2, minR * 0.6, maxR);
+        cluster.cx = W * 0.6;
+        cluster.cy = textRect.bottom + margin + cluster.r;
+        channelX = cluster.cx;
+        // No ceiling below ~0.9 here — on short/narrow viewports the text
+        // can occupy most of the height, and the rows still need to start
+        // below wherever it actually ends, even if that leaves them
+        // tightly bunched near the bottom edge (which .flow-sticky clips).
+        const bandTop = clamp((textRect.bottom + margin) / H, 0.15, 0.9);
+        channelBand = { top: bandTop, step: (1 - bandTop) / 3.2 };
+      }
     }
 
     const hexToRgb = h => [parseInt(h.slice(1,3),16), parseInt(h.slice(3,5),16), parseInt(h.slice(5,7),16)];
@@ -2534,10 +2601,7 @@ const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
     }
 
     const homePos = (p) => {
-      const cx = W * 0.75; // originate from right to match hero card position
-      const cy = H * 0.45;
-      const baseR = Math.min(W, H) * 0.30;
-      return { x: cx + Math.cos(p.homeA) * p.homeR * baseR, y: cy + Math.sin(p.homeA) * p.homeR * baseR };
+      return { x: cluster.cx + Math.cos(p.homeA) * p.homeR * cluster.r, y: cluster.cy + Math.sin(p.homeA) * p.homeR * cluster.r };
     };
 
     const targetPos = (p) => {
@@ -2548,8 +2612,7 @@ const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
     const pathPos = (p, t) => {
       const home = homePos(p);
       const target = targetPos(p);
-      const channelY = (0.22 + p.li * 0.28) * H + p.channelJitter;
-      const channelX = 60;
+      const channelY = (channelBand.top + p.li * channelBand.step) * H + p.channelJitter;
       const c1x = channelX;
       const c1y = home.y + (channelY - home.y) * 0.95;
       const c2x = channelX;
@@ -2562,6 +2625,7 @@ const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
     };
 
     let scrollProgress = 0;
+    let playing = false;
     function step() {
       const rect = container.getBoundingClientRect();
       const runway = container.offsetHeight - window.innerHeight;
@@ -2683,9 +2747,29 @@ const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
           ctx.strokeStyle = 'rgba(184, 88, 66, 0.4)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(x, y, 10 + Math.sin(T + p.xPos*10)*2, 0, Math.PI*2); ctx.stroke();
         }
       }
+      if (playing) requestAnimationFrame(step);
+    }
+
+    // Only run this loop while the section is actually on screen and the
+    // tab is visible — previously it ran forever from page load, redrawing
+    // the full canvas and ~1,000 particles every frame even when scrolled
+    // far away or backgrounded.
+    function tryStart() {
+      if (playing || document.hidden) return;
+      playing = true;
       requestAnimationFrame(step);
     }
-    step();
+    const flowIo = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) tryStart();
+        else playing = false;
+      });
+    }, { threshold: 0 });
+    flowIo.observe(container);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) playing = false;
+      else tryStart();
+    });
   })();
 
   // ============================================================
@@ -2936,7 +3020,7 @@ const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
 
     function draw(now) {
       if (!cctx) { playing = false; return; }
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const w = canvas.clientWidth, h = canvas.clientHeight;
       if (!w || !h) { if (playing) requestAnimationFrame(draw); return; }
       if (canvas.width !== Math.round(w * dpr)) { canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr); }
